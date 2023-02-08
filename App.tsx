@@ -13,7 +13,7 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
+//   useColorScheme,
   View,
 } from 'react-native';
 
