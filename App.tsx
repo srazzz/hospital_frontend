@@ -6,7 +6,8 @@
  */
 
 import React from 'react';
-import MainScreen from './screens/mainScreen';
+import MainScreen from './screens/MainScreen';
+import DoctorScreen from './screens/DoctorScreen';
 import {
   SafeAreaView,
   useColorScheme,
@@ -29,6 +30,7 @@ function App(): JSX.Element {
   return (
     <SafeAreaView >
       <MainScreen/>
+      {/* <DoctorScreen/> */}
     </SafeAreaView>
   );
 }
