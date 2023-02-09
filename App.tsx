@@ -6,27 +6,20 @@
  */
 
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import MainScreen from './screens/mainScreen';
+import MainScreen from './screens/MainScreen';
+import DoctorScreen from './screens/DoctorScreen';
+import PatientScreen from './screens/PatientScreen';
 import {
   SafeAreaView,
   useColorScheme,
+  StyleSheet,
 } from 'react-native';
 
 import {
   Colors,
 } from 'react-native/Libraries/NewAppScreen';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
 
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <></>
-  );
-}
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -36,11 +29,14 @@ function App(): JSX.Element {
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <SafeAreaView >
       <MainScreen/>
+      {/* <DoctorScreen/> */}
+      {/* <PatientScreen/> */}
     </SafeAreaView>
   );
 }
+
 
 
 export default App;
