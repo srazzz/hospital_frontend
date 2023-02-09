@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import MainScreen from './screens/MainScreen';
+import MainScreen from '/Projects/hospital/hospital_frontend/screens/MainScreen';
 import DoctorScreen from './screens/DoctorScreen';
 import PatientScreen from './screens/PatientScreen';
 import {
