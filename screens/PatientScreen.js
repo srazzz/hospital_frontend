@@ -78,7 +78,7 @@ const renderItem = ( {item} ) => (
 
 );
 
-const DoctorScreen = () => {
+const PatientScreen = () => {
     const [searchTerm, setSearchTerm] = useState('');
 
     const filteredData = data.filter(person => person.lastName.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -86,13 +86,8 @@ const DoctorScreen = () => {
     return (
         <View style={styles.background}>
             <View style={{MarginLeft:20}}>
-                {/* <Image 
-                    source={{ uri: "https://static.thenounproject.com/png/101791-200.png" }}
-                    style={styles.icon}
-                />*/}
-                <Icon style={styles.searchIcon} name="ios-search" size={20} color="#000"/>
                 <TextInput
-                    placeholder='Search Here....'
+                    placeholder='patient Search Here....'
                     placeholderTextColor="#000"
                     style={styles.searchBar}
                     onChangeText={text => setSearchTerm(text)}
@@ -160,9 +155,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
 
     },
-    icon: {
-        marginRight: 10,
-        flex:1,
-    },
+    
 })
-export default DoctorScreen;
+export default PatientScreen;
