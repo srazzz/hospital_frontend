@@ -1,7 +1,7 @@
-import { FlatList, View, Text, StyleSheet, TextInput, Image , } from 'react-native';
+import { FlatList, View, Text, StyleSheet, TextInput, Button, } from 'react-native';
 import React from 'react';
 import { useState } from 'react';
-import {Icon} from 'react-native';
+
 const data = [{
     "firstName": "Scotty",
     "lastName": "Trevorrow"
@@ -67,7 +67,7 @@ const data = [{
     "lastName": "Grimwood"
 }]
 
-const renderItem = ( {item} ) => (
+const renderItem = ({ item }) => (
 
     <View style={styles.box}>
         <Text style={styles.firstname}>
@@ -78,21 +78,22 @@ const renderItem = ( {item} ) => (
 
 );
 
-const PatientScreen = () => {
+const PatientScreen = ({navigation}) => {
     const [searchTerm, setSearchTerm] = useState('');
 
     const filteredData = data.filter(person => person.lastName.toLowerCase().includes(searchTerm.toLowerCase()));
 
     return (
         <View style={styles.background}>
-            <View style={{MarginLeft:20}}>
+            
+            <View style={{ MarginLeft: 20 }}>
                 <TextInput
                     placeholder='patient Search Here....'
                     placeholderTextColor="#000"
                     style={styles.searchBar}
                     onChangeText={text => setSearchTerm(text)}
-                    />
-                  
+                />
+
             </View>
             <FlatList
                 data={filteredData}
@@ -116,8 +117,8 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         height: 45,
         // paddingLeft : "10%",
-          },
-      
+    },
+
     background: {
         backgroundColor: "#D3E6E5",
         height: "100%",
@@ -155,6 +156,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
 
     },
-    
+
 })
 export default PatientScreen;

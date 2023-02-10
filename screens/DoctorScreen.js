@@ -1,7 +1,7 @@
-import { FlatList, View, Text, StyleSheet, TextInput, Image , } from 'react-native';
+import { FlatList, View, Text, StyleSheet, TextInput,Button } from 'react-native';
 import React from 'react';
 import { useState } from 'react';
-import {Icon} from 'react-native';
+
 const data = [{
     "firstName": "Scotty",
     "lastName": "Trevorrow"
@@ -67,7 +67,7 @@ const data = [{
     "lastName": "Grimwood"
 }]
 
-const renderItem = ( {item} ) => (
+const renderItem = ({ item }) => (
 
     <View style={styles.box}>
         <Text style={styles.firstname}>
@@ -78,26 +78,24 @@ const renderItem = ( {item} ) => (
 
 );
 
-const DoctorScreen = () => {
+// const DoctorScreen = ({ navigation }) => {
+    const DoctorScreen = () => {
     const [searchTerm, setSearchTerm] = useState('');
 
     const filteredData = data.filter(person => person.lastName.toLowerCase().includes(searchTerm.toLowerCase()));
 
     return (
         <View style={styles.background}>
-            <View style={{MarginLeft:20}}>
-                {/* <Image 
-                    source={{ uri: "https://static.thenounproject.com/png/101791-200.png" }}
-                    style={styles.icon}
-                />*/}
-                <Icon style={styles.searchIcon} name="ios-search" size={20} color="#000"/>
+            
+            <View style={{ MarginLeft: 20 }}>
+
                 <TextInput
                     placeholder='Search Here....'
                     placeholderTextColor="#000"
                     style={styles.searchBar}
                     onChangeText={text => setSearchTerm(text)}
-                    />
-                  
+                />
+
             </View>
             <FlatList
                 data={filteredData}
@@ -105,7 +103,7 @@ const DoctorScreen = () => {
                 numColumns={2}
                 keyExtractor={item => item.lastName}
             />
-            <Text>search bar</Text>
+            
         </View>
     )
 }
@@ -121,8 +119,8 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         height: 45,
         // paddingLeft : "10%",
-          },
-      
+    },
+
     background: {
         backgroundColor: "#D3E6E5",
         height: "100%",
@@ -162,7 +160,7 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginRight: 10,
-        flex:1,
+        flex: 1,
     },
 })
 export default DoctorScreen;
