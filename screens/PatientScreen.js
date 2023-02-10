@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {FlatList, View, Text, StyleSheet, TextInput} from 'react-native';
+import {FlatList, View, Text, StyleSheet, TextInput, Image} from 'react-native';
 
 const data = [
   {
@@ -107,12 +107,22 @@ const PatientScreen = () => {
   );
   return (
     <View style={styles.background}>
-      <View style={{MarginLeft: 20}}>
+      <View style={{         
+            flexDirection: 'row',
+          height: 50,
+          margin: 10,
+          backgroundColor: '#FFF',
+          alignItems: 'center',
+          borderRadius: 10,}}>
         <TextInput
           placeholder="patient Search Here...."
           placeholderTextColor="#000"
           style={styles.searchBar}
           onChangeText={text => setSearchTerm(text)}
+        />
+        <Image
+          source={require('../images/search_icon.png')}
+          style={{width: '15%', height: '80%', resizeMode: 'contain'}}
         />
       </View>
       <FlatList
@@ -121,22 +131,16 @@ const PatientScreen = () => {
         numColumns={2}
         keyExtractor={item => item.lastName}
       />
-      <Text>search bar</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  searchBar: {
-    width: '95%',
-    justifyContent: 'center',
-    backgroundColor: 'white',
-    color: 'black',
-    marginLeft: '2.5%',
-    margin: '2%',
-    borderRadius: 12,
-    height: 45,
-  },
+    searchBar: {
+        width: '85%',
+        paddingLeft: 10,
+        color: 'black',
+      },
   background: {
     backgroundColor: '#D3E6E5',
     height: '100%',
