@@ -116,9 +116,11 @@ const DoctorScreen = () => {
           backgroundColor: '#FFF',
           alignItems: 'center',
           borderRadius: 10,
+          borderColor: 'black',
+          borderWidth: 2,
         }}>
         <TextInput
-          placeholder="Search Here...."
+          placeholder="Doctor Search Here...."
           placeholderTextColor="#000"
           style={styles.searchBar}
           onChangeText={text => setSearchTerm(text)}
@@ -161,14 +163,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   box: {
-    flex: 1 / 2,
-    backgroundColor: '#1B4646',
+    // flex: 1 / 2,
+    width: '48%',
+    backgroundColor: '#3B6474',
     margin: 4,
     borderRadius: 12,
     textAlign: 'center',
     height: 250,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 4,
+    borderColor: 'black',
   },
   icon: {
     marginRight: 10,

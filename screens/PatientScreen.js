@@ -107,15 +107,19 @@ const PatientScreen = () => {
   );
   return (
     <View style={styles.background}>
-      <View style={{         
-            flexDirection: 'row',
+      <View
+        style={{
+          flexDirection: 'row',
           height: 50,
           margin: 10,
           backgroundColor: '#FFF',
           alignItems: 'center',
-          borderRadius: 10,}}>
+          borderRadius: 10,
+          borderColor: 'black',
+          borderWidth: 2,
+        }}>
         <TextInput
-          placeholder="patient Search Here...."
+          placeholder="Patient Search Here...."
           placeholderTextColor="#000"
           style={styles.searchBar}
           onChangeText={text => setSearchTerm(text)}
@@ -136,11 +140,11 @@ const PatientScreen = () => {
 };
 
 const styles = StyleSheet.create({
-    searchBar: {
-        width: '85%',
-        paddingLeft: 10,
-        color: 'black',
-      },
+  searchBar: {
+    width: '85%',
+    paddingLeft: 10,
+    color: 'black',
+  },
   background: {
     backgroundColor: '#D3E6E5',
     height: '100%',
@@ -158,7 +162,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   box: {
-    flex: 1 / 2,
+    width: '48%',
     backgroundColor: '#1B4646',
     margin: 4,
     borderRadius: 12,
@@ -166,6 +170,8 @@ const styles = StyleSheet.create({
     height: 250,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 5,
+    borderColor: 'black',
   },
 });
 
