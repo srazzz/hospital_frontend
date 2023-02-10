@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {FlatList, View, Text, StyleSheet, TextInput, Image} from 'react-native';
+import {FlatList, View, Text, StyleSheet, TextInput} from 'react-native';
 
 const data = [
   {
@@ -95,37 +95,24 @@ const renderItem = ({item}) => (
       {'\n'}
     </Text>
     <Text style={styles.lastname}>
-      last Name : {item.lastName}
-      {'\n'}
+      last Name : {item.lastName} {'\n'}
     </Text>
   </View>
 );
 
-const DoctorScreen = () => {
+const PatientScreen = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const filteredData = data.filter(person =>
     person.lastName.toLowerCase().includes(searchTerm.toLowerCase()),
   );
   return (
     <View style={styles.background}>
-      <View
-        style={{
-          flexDirection: 'row',
-          height: 50,
-          margin: 10,
-          backgroundColor: '#FFF',
-          alignItems: 'center',
-          borderRadius: 10,
-        }}>
+      <View style={{MarginLeft: 20}}>
         <TextInput
-          placeholder="Search Here...."
+          placeholder="patient Search Here...."
           placeholderTextColor="#000"
           style={styles.searchBar}
           onChangeText={text => setSearchTerm(text)}
-        />
-        <Image
-          source={require('../images/search_icon.png')}
-          style={{width: '15%', height: '80%', resizeMode: 'contain'}}
         />
       </View>
       <FlatList
@@ -134,15 +121,21 @@ const DoctorScreen = () => {
         numColumns={2}
         keyExtractor={item => item.lastName}
       />
+      <Text>search bar</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   searchBar: {
-    width: '85%',
-    paddingLeft: 10,
+    width: '95%',
+    justifyContent: 'center',
+    backgroundColor: 'white',
     color: 'black',
+    marginLeft: '2.5%',
+    margin: '2%',
+    borderRadius: 12,
+    height: 45,
   },
   background: {
     backgroundColor: '#D3E6E5',
@@ -170,10 +163,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  icon: {
-    marginRight: 10,
-    flex: 1,
-  },
 });
 
-export default DoctorScreen;
+export default PatientScreen;
