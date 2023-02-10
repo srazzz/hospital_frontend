@@ -6,19 +6,19 @@ const MainScreen = ({navigation}) => {
   return (
     <View style={styles.background}>
       <View style={styles.container}>
-        <Text style={{color: 'black', fontSize: 20, padding: 40}}>
+        <Text style={{color: 'black', fontSize: 20, padding: 20}}>
           Choose an Option...
         </Text>
 
         <TouchableOpacity
           onPress={() => navigation.navigate('DoctorScreen')}
           style={styles.touchableOpacity}>
-          <Text style={styles.text}>Doctor</Text>
+          <Text style={styles.Card}>Doctor</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('PatientScreen')}
           style={styles.touchableOpacity}>
-          <Text style={styles.text}>Patient</Text>
+          <Text style={styles.Card}>Patient</Text>
         </TouchableOpacity>
 
       </View>
@@ -32,16 +32,18 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
   },
-  text: {
+  Card: {
     backgroundColor: '#1B4646',
-    borderColor: '#FFF',
-    borderWidth: 2,
+    borderColor: 'black',
+    borderWidth: 4,
     color: '#FFF',
     textAlign: 'center',
     padding: 30,
     margin: 20,
     width: 300,
     borderRadius: 20,
+    fontSize: 20,
+    textAlign: 'center',
   },
 
   touchableOpacity: {},
