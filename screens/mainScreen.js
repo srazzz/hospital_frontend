@@ -1,4 +1,6 @@
-import {View, Text, StyleSheet, Button} from 'react-native';
+
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+
 
 const MainScreen = ({navigation}) => {
   return (
@@ -7,18 +9,18 @@ const MainScreen = ({navigation}) => {
         <Text style={{color: 'black', fontSize: 20, padding: 40}}>
           Choose an Option...
         </Text>
-        <Button
-          title="Doctor"
+
+        <TouchableOpacity
           onPress={() => navigation.navigate('DoctorScreen')}
-          style={styles.Button}>
+          style={styles.touchableOpacity}>
           <Text style={styles.text}>Doctor</Text>
-        </Button>
-        <Button
-          title="Patient"
+        </TouchableOpacity>
+        <TouchableOpacity
           onPress={() => navigation.navigate('PatientScreen')}
-          style={styles.Button}>
+          style={styles.touchableOpacity}>
           <Text style={styles.text}>Patient</Text>
-        </Button>
+        </TouchableOpacity>
+
       </View>
     </View>
   );
@@ -41,7 +43,8 @@ const styles = StyleSheet.create({
     width: 300,
     borderRadius: 20,
   },
-  Button: {},
+
+  touchableOpacity: {},
   container: {
     marginTop: '45%',
     display: 'flex',
