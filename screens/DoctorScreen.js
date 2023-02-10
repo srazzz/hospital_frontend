@@ -1,7 +1,7 @@
-import { FlatList, View, Text, StyleSheet, TextInput, Image , } from 'react-native';
+import { FlatList, View, Text, StyleSheet, TextInput, Image } from 'react-native';
 import React from 'react';
 import { useState } from 'react';
-import {Icon} from 'react-native';
+// import {Icon} from 'react-native';
 const data = [{
     "firstName": "Scotty",
     "lastName": "Trevorrow"
@@ -68,14 +68,12 @@ const data = [{
 }]
 
 const renderItem = ( {item} ) => (
-
     <View style={styles.box}>
         <Text style={styles.firstname}>
-            first Name     : {item.firstName}{'\n'}</Text>
+            first Name : {item.firstName}{'\n'}</Text>
         <Text style={styles.lastname}>
-            last Name : {item.lastName}  {'\n'}</Text>
+            last Name : {item.lastName}{'\n'}</Text>
     </View>
-
 );
 
 const DoctorScreen = () => {
@@ -85,19 +83,18 @@ const DoctorScreen = () => {
 
     return (
         <View style={styles.background}>
-            <View style={{MarginLeft:20}}>
-                {/* <Image 
-                    source={{ uri: "https://static.thenounproject.com/png/101791-200.png" }}
-                    style={styles.icon}
-                />*/}
-                <Icon style={styles.searchIcon} name="ios-search" size={20} color="#000"/>
+            <View >
                 <TextInput
                     placeholder='Search Here....'
                     placeholderTextColor="#000"
                     style={styles.searchBar}
                     onChangeText={text => setSearchTerm(text)}
-                    />
-                  
+                    >
+                  </TextInput>
+                <Image source={require('../images/search_icon.png')}
+                style={{width: 10,padding: 15, height: 10}}
+            > 
+            </Image>
             </View>
             <FlatList
                 data={filteredData}
@@ -105,7 +102,6 @@ const DoctorScreen = () => {
                 numColumns={2}
                 keyExtractor={item => item.lastName}
             />
-            <Text>search bar</Text>
         </View>
     )
 }
@@ -113,14 +109,17 @@ const DoctorScreen = () => {
 const styles = StyleSheet.create({
     searchBar: {
         width: "95%",
-        justifyContent: "center",
+        paddingLeft: 50,
+        // justifyContent: "center",
         backgroundColor: "white",
         color: "black",
-        marginLeft: "2.5%",
+        // marginLeft: "2.5%",
         margin: "2%",
         borderRadius: 12,
         height: 45,
-        // paddingLeft : "10%",
+        // paddingLeft : "50%",
+        // textAlign: 'center'
+        // flexDirection: 'row',
           },
       
     background: {
@@ -129,9 +128,8 @@ const styles = StyleSheet.create({
         width: "100%",
         marginBottom: 5,
         // flexDirection: 'row',
-        // alignItems: 'center'
-        // paddingLeft : "2%"
-
+        // alignItems: 'center',
+        // paddingLeft : "2%",
     },
 
     firstname: {
