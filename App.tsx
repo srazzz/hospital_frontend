@@ -1,42 +1,23 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import * as React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import React from 'react';
-import MainScreen from './screens/MainScreen';
+import MainScreen from './screens/mainScreen';
 import DoctorScreen from './screens/DoctorScreen';
 import PatientScreen from './screens/PatientScreen';
-import {
-  SafeAreaView,
-  useColorScheme,
-  StyleSheet,
-} from 'react-native';
 
-import {
-  Colors,
-} from 'react-native/Libraries/NewAppScreen';
+const Stack = createNativeStackNavigator();
 
-
-
-function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+const App = () => {
   return (
-    <SafeAreaView >
-      <MainScreen/>
-      {/* <DoctorScreen/> */}
-      {/* <PatientScreen/> */}
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Main">
+        <Stack.Screen name="Main" component={MainScreen} />
+        <Stack.Screen name="DoctorScreen" component={DoctorScreen} />
+        <Stack.Screen name="PatientScreen" component={PatientScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
-
-
+};
 
 export default App;

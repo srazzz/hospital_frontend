@@ -1,168 +1,111 @@
-import { FlatList, View, Text, StyleSheet, TextInput, Image , } from 'react-native';
-import React from 'react';
-import { useState } from 'react';
-import {Icon} from 'react-native';
-const data = [{
-    "firstName": "Scotty",
-    "lastName": "Trevorrow"
-}, {
-    "firstName": "Bernarr",
-    "lastName": "Armatage"
-}, {
-    "firstName": "Carlynn",
-    "lastName": "Kivlehan"
-}, {
-    "firstName": "Ferrell",
-    "lastName": "Giroldi"
-}, {
-    "firstName": "Thayne",
-    "lastName": "Carlow"
-}, {
-    "firstName": "Webb",
-    "lastName": "Cordoba"
-}, {
-    "firstName": "Sunshine",
-    "lastName": "Ullock"
-}, {
-    "firstName": "Lamont",
-    "lastName": "MacScherie"
-}, {
-    "firstName": "Atlanta",
-    "lastName": "Tyers"
-}, {
-    "firstName": "Harriet",
-    "lastName": "Alldread"
-}, {
-    "firstName": "Chrissie",
-    "lastName": "Caddie"
-}, {
-    "firstName": "Siobhan",
-    "lastName": "de Najera"
-}, {
-    "firstName": "Ondrea",
-    "lastName": "Cumming"
-}, {
-    "firstName": "Phillipe",
-    "lastName": "Ames"
-}, {
-    "firstName": "Dex",
-    "lastName": "Woodwind"
-}, {
-    "firstName": "Van",
-    "lastName": "Petyakov"
-}, {
-    "firstName": "Violet",
-    "lastName": "Weatherhogg"
-}, {
-    "firstName": "Terence",
-    "lastName": "Clewley"
-}, {
-    "firstName": "Portia",
-    "lastName": "De Haven"
-}, {
-    "firstName": "Penny",
-    "lastName": "Petren"
-}, {
-    "firstName": "Wilmer",
-    "lastName": "Grimwood"
-}]
+import React, {useState, useEffect} from 'react';
+import {FlatList, View, Text, StyleSheet, TextInput, Image} from 'react-native';
+import {connection} from '../connection';
 
-const renderItem = ( {item} ) => (
-
-    <View style={styles.box}>
-        <Text style={styles.firstname}>
-            first Name     : {item.firstName}{'\n'}</Text>
-        <Text style={styles.lastname}>
-            last Name : {item.lastName}  {'\n'}</Text>
-    </View>
-
+const renderItem = ({item}) => (
+  <View style={styles.box}>
+    <Text style={styles.firstname}>
+      Name : {item.name}
+      {'\n'}
+    </Text>
+    <Text style={styles.lastname}>
+      speciality : {item.specialty}
+      {'\n'}
+    </Text>
+  </View>
 );
 
 const DoctorScreen = () => {
-    const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [data, setData] = useState('');
+  const filteredData =
+    data &&
+    data.filter(person =>
+      person.name.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
 
-    const filteredData = data.filter(person => person.lastName.toLowerCase().includes(searchTerm.toLowerCase()));
+  useEffect(() => {
+    async function fetchData() {
+      let doctorData = await connection('doctors');
+      setData(doctorData);
+      console.log(data);
+    }
+    fetchData();
+  }, []);
 
-    return (
-        <View style={styles.background}>
-            <View style={{MarginLeft:20}}>
-                {/* <Image 
-                    source={{ uri: "https://static.thenounproject.com/png/101791-200.png" }}
-                    style={styles.icon}
-                />*/}
-                <Icon style={styles.searchIcon} name="ios-search" size={20} color="#000"/>
-                <TextInput
-                    placeholder='Search Here....'
-                    placeholderTextColor="#000"
-                    style={styles.searchBar}
-                    onChangeText={text => setSearchTerm(text)}
-                    />
-                  
-            </View>
-            <FlatList
-                data={filteredData}
-                renderItem={renderItem}
-                numColumns={2}
-                keyExtractor={item => item.lastName}
-            />
-            <Text>search bar</Text>
-        </View>
-    )
-}
+  return (
+    <View style={styles.background}>
+      <View
+        style={{
+          flexDirection: 'row',
+          height: 50,
+          margin: 10,
+          backgroundColor: '#FFF',
+          alignItems: 'center',
+          borderRadius: 10,
+          borderColor: 'black',
+          borderWidth: 2,
+        }}>
+        <TextInput
+          placeholder="Doctor Search Here...."
+          placeholderTextColor="#000"
+          style={styles.searchBar}
+          onChangeText={text => setSearchTerm(text)}
+        />
+        <Image
+          source={require('../images/search_icon.png')}
+          style={{width: '15%', height: '80%', resizeMode: 'contain'}}
+        />
+      </View>
+      <FlatList
+        data={filteredData}
+        renderItem={renderItem}
+        numColumns={2}
+        keyExtractor={item => item.name}
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    searchBar: {
-        width: "95%",
-        justifyContent: "center",
-        backgroundColor: "white",
-        color: "black",
-        marginLeft: "2.5%",
-        margin: "2%",
-        borderRadius: 12,
-        height: 45,
-        // paddingLeft : "10%",
-          },
-      
-    background: {
-        backgroundColor: "#D3E6E5",
-        height: "100%",
-        width: "100%",
-        marginBottom: 5,
-        // flexDirection: 'row',
-        // alignItems: 'center'
-        // paddingLeft : "2%"
+  searchBar: {
+    width: '85%',
+    paddingLeft: 10,
+    color: 'black',
+  },
+  background: {
+    backgroundColor: '#D3E6E5',
+    height: '100%',
+    width: '100%',
+    marginBottom: 5,
+  },
+  firstname: {
+    color: '#D3E6E6',
+    textAlign: 'left',
+    justifyContent: 'center',
+  },
+  lastname: {
+    color: '#D3E6E6',
+    textAlign: 'left',
+    justifyContent: 'center',
+  },
+  box: {
+    // flex: 1 / 2,
+    width: '48%',
+    backgroundColor: '#3B6474',
+    margin: 4,
+    borderRadius: 12,
+    textAlign: 'center',
+    height: 250,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 4,
+    borderColor: 'black',
+  },
+  icon: {
+    marginRight: 10,
+    flex: 1,
+  },
+});
 
-    },
-
-    firstname: {
-        color: "#D3E6E6",
-        textAlign: "left",
-        justifyContent: "center",
-
-    },
-    lastname: {
-        color: "#D3E6E6",
-        textAlign: "left",
-        justifyContent: "center",
-
-
-    },
-
-    box: {
-        // width: "47%",
-        flex: 1 / 2,
-        backgroundColor: "#1B4646",
-        margin: 4,
-        borderRadius: 12,
-        textAlign: "center",
-        height: 250,
-        justifyContent: "center",
-        alignItems: "center",
-
-    },
-    icon: {
-        marginRight: 10,
-        flex:1,
-    },
-})
 export default DoctorScreen;
