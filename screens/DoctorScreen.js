@@ -108,15 +108,25 @@ const DoctorScreen = () => {
   );
   return (
     <View style={styles.background}>
-      <View>
+      <View
+        style={{
+          flexDirection: 'row',
+          height: 50,
+          margin: 10,
+          backgroundColor: '#FFF',
+          alignItems: 'center',
+          borderRadius: 10,
+        }}>
         <TextInput
           placeholder="Search Here...."
           placeholderTextColor="#000"
           style={styles.searchBar}
-          onChangeText={text => setSearchTerm(text)}></TextInput>
+          onChangeText={text => setSearchTerm(text)}
+        />
         <Image
           source={require('../images/search_icon.png')}
-          style={{width: 10, padding: 15, height: 10}}></Image>
+          style={{width: '15%', height: '80%', resizeMode: 'contain'}}
+        />
       </View>
       <FlatList
         data={filteredData}
@@ -130,13 +140,9 @@ const DoctorScreen = () => {
 
 const styles = StyleSheet.create({
   searchBar: {
-    width: '95%',
-    paddingLeft: 50,
-    backgroundColor: 'white',
+    width: '85%',
+    paddingLeft: 10,
     color: 'black',
-    margin: '2%',
-    borderRadius: 12,
-    height: 45,
   },
   background: {
     backgroundColor: '#D3E6E5',
