@@ -67,7 +67,7 @@ const patientScreen = () => {
           borderWidth: 2,
         }}>
         <TextInput
-          placeholder="patient Search Here...."
+          placeholder="Patient Search Here...."
           placeholderTextColor="#000"
           style={styles.searchBar}
           onChangeText={text => setSearchTerm(text)}
