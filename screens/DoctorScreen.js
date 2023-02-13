@@ -1,9 +1,24 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList, View, Text, StyleSheet, TextInput, Image} from 'react-native';
+import {
+  FlatList,
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import {connection} from '../connection';
 
 const renderItem = ({item}) => (
   <View style={styles.box}>
+    <TouchableOpacity
+      style={styles.editOption}
+      // onPress={() => navigation.navigate('AddDoctorScreen')}
+      >
+      <Text style={{color : "black" , alignItems : "center"}}>  E</Text>
+    </TouchableOpacity>
+
     <Text style={styles.firstname}>
       Name : {item.name}
       {'\n'}
@@ -28,7 +43,7 @@ const DoctorScreen = () => {
     async function fetchData() {
       let doctorData = await connection('doctors');
       setData(doctorData);
-      console.log(data);
+      // console.log('777777777777777777777777777777777777777777777777777777777777',data);
     }
     fetchData();
   }, []);
@@ -63,6 +78,11 @@ const DoctorScreen = () => {
         numColumns={2}
         keyExtractor={item => item.name}
       />
+      <TouchableOpacity style={styles.floatingButton}
+      // onPress = {postData()}
+      >
+        <Text style={styles.floatButtonText}>+</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -78,6 +98,7 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     marginBottom: 5,
+    margin: 5,
   },
   firstname: {
     color: '#D3E6E6',
@@ -102,9 +123,36 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderColor: 'black',
   },
-  icon: {
-    marginRight: 10,
-    flex: 1,
+  floatingButton: {
+    backgroundColor: '#D3E6E5',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    borderColor: 'black',
+    borderWidth: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    // top : "89%",
+    // left : "80%",
+    top: 603,
+    left: 290,
+  },
+  floatButtonText: {
+    color: 'black',
+    fontSize: 20,
+  },
+  editOption: {
+    backgroundColor: '#D3E6E5',
+    width: 25,
+    height: 25,
+    borderRadius: 30,
+    borderColor: 'black',
+    borderWidth: 2,
+    justifyContent: 'center',
+    position: 'absolute',
+    top : 5,
+    right :10,
   },
 });
 
