@@ -10,10 +10,8 @@ import {
   Alert,
 } from 'react-native';
 import {connection, del} from '../connection';
-
-
-
-
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
 
 
 const DoctorScreen = () => {
@@ -49,13 +47,21 @@ const DoctorScreen = () => {
   const renderItem = ({item}) => (
     <View style={styles.box}>
       <TouchableOpacity
-        style={styles.editOption}
+        style={styles.delOption}
         onPress={() => delOption(item._id) }>
         <Text style={{color: 'black', alignItems: 'center', textAlign: 'center'}}
         >
-          D
+          <Icon name='delete' size={15} />
         </Text>
-      </TouchableOpacity>
+        </TouchableOpacity>
+        <TouchableOpacity
+        style={styles.editOption}
+        >
+        <Text style={{color: 'black', alignItems: 'center', textAlign: 'center'}}
+        >
+          <EntypoIcon name={'pencil'} size={15} />
+        </Text>
+        </TouchableOpacity>
   
       <Text style={styles.firstname}>
         Name : {item.name}
@@ -158,14 +164,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    // top : "89%",
-    // left : "80%",
-    top: 603,
+    top: 670,
     left: 290,
   },
   floatButtonText: {
     color: 'black',
     fontSize: 20,
+  },
+  delOption: {
+    backgroundColor: '#D3E6E5',
+    width: 25,
+    height: 25,
+    borderRadius: 30,
+    borderColor: 'black',
+    borderWidth: 2,
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 5,
+    right: 10,
   },
   editOption: {
     backgroundColor: '#D3E6E5',
@@ -177,7 +193,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     top: 5,
-    right: 10,
+    right: 40,
   },
 });
 
