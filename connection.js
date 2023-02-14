@@ -8,8 +8,6 @@ export const connection = async type => {
   } catch (error) {
     console.error(error);
   } finally {
-    // setLoading(false);
-    // fetchFunction
   }
 };
 
@@ -51,4 +49,23 @@ export const putData = async (id,name,age, type) => {
     reject(error);
   }
   });
+};
+
+
+export const del = async (_id , type) => {
+  return new Promise(async (reslove, reject) => {
+  try {
+    const response = await fetch(`http://192.168.0.181:3001/${type}/${_id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+    const data = await response.json();
+    reslove(data);
+  } catch (error) {
+    console.error(error);
+    reject(error);
+  }
+});
 };
