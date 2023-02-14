@@ -41,6 +41,7 @@ const DoctorScreen = () => {
 
   useEffect(() => {
     async function fetchData() {
+      console.log("fetched")
       let doctorData = await connection('doctors');
       setData(doctorData);
       // console.log('777777777777777777777777777777777777777777777777777777777777',data);
