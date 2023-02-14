@@ -1,49 +1,54 @@
+// import { fetchFunction } from './PatientScreen';
+export const connection = async type => {
+  try {
+    const response = await fetch(`http://192.168.1.12:3001/${type}`);
+    const json = await response.json();
+    // console.log(patients)
+    return type === 'doctors' ? json.doctors : json.patients;
+  } catch (error) {
+    console.error(error);
+  } finally {
+    // setLoading(false);
+    // fetchFunction
+  }
+};
 
-export const connection = async(type) => {
+export const postData = (name, age, type) => {
+  return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch(`http://192.168.0.158:3001/${type}`);
-      const json = await response.json();
-      return(type === 'doctors' ? json.doctors : json.patients);
+      const response = await fetch(`http://192.168.1.12:3001/${type}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({name: name, age: age}),
+      });
+      const data = await response.json();
+      resolve(data);
     } catch (error) {
       console.error(error);
-    } finally {
-      // setLoading(false);
+      reject(error);
     }
-
+  });
 };
 
-export const postData = async (name, age, type) => {
+export const putData = async (id,name,age, type) => {
+   return new Promise(async (resolve, reject) => {
   try {
-    const response = await fetch(`http://192.168.0.158:3001/${type}`, {
-      method: 'POST',
+    // console.log(id,name,age,"theretehre")
+    const response = await fetch(`http://192.168.1.12:3001/${type}/${id}`, {
+      method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name: name, age: age  }),
+      body: JSON.stringify({name : name , age: age}),
     });
     const data = await response.json();
-    return data;
+    // console.log(data,"theretehre")
+    resolve(data);
   } catch (error) {
     console.error(error);
+    reject(error);
   }
+  });
 };
-
-
-export const putData = async (name, age, type ) => {
-  try {
-    const response = await fetch(`http://192.168.0.158:3001/${type}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name: name, age: age  }),
-    });
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-
-

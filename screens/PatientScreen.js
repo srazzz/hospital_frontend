@@ -11,24 +11,55 @@ import {
 import Modal from 'react-native-modal';
 import {connection} from '../connection';
 import Form from './Form';
-
-const renderItem = ({item, setVisible}) => (
-  
+const editOptionFunctions = (
+  visible,
+  setVisible,
+  setId,
+  setName,
+  setAge,
+  id,
+  name,
+  age,
+  functionName,
+  setFunctionName
+) => {
+ 
+  setVisible(true);
+  setId(id)
+  setName(name);
+  setAge(age);
+  setFunctionName('put')
+  //  console.log(functionName,"heyyyyyyyyyyyyyyyyyyy");
+};
+const renderItem = (item, visible, setVisible, id,setId,name, setName, age, setAge,functionName,setFunctionName) => (
   <View style={styles.box}>
     <TouchableOpacity
-    //  onPress={() => setVisible(true)}
-      style={styles.editOption}
-      // onPress ={setVisible}
-      // onPress={() => setVisible(true)}
-    >
+      onPress={() =>
+        editOptionFunctions(
+          visible,
+          setVisible,
+          setId,
+          setName,
+          setAge,
+          item.item._id,
+          item.item.name,
+          item.item.age,
+          functionName,
+          setFunctionName,
+          
+        )
+      }
+      //onPress={() => setAge(item.item.age)}
+      style={styles.editOption}>
       <Text style={{color: 'black', alignItems: 'center'}}> E</Text>
     </TouchableOpacity>
+
     <Text style={styles.name}>
-      Name : {item.name}
+      Name : {item.item.name}
       {'\n'}
     </Text>
     <Text style={styles.age}>
-      age : {item.age}
+      age : {item.item.age}
       {'\n'}
     </Text>
   </View>
@@ -37,21 +68,36 @@ const renderItem = ({item, setVisible}) => (
 const patientScreen = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [data, setData] = useState('');
-  const [visible ,setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
+  const [id , setId] = useState("")
+  const [name, setName] = useState('');
+  const [age, setAge] = useState('');
+  const [functionName, setFunctionName] = useState('');
   const filteredData =
     data &&
     data.filter(person =>
       person.name.toLowerCase().includes(searchTerm.toLowerCase()),
     );
 
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     console.log('fetched');
+  //     let patientData = await connection('patients');
+  //     setData(patientData);
+      
+  //   }
+  //   fetchData();
+  // }, []);
+  const fetchData = async ()=> {
+    // console.log('fetched');
+        let patientData = await connection('patients');
+        setData(patientData);
+        
+  }
   useEffect(() => {
-    async function fetchData() {
-      let patientData = await connection('patients');
-      setData(patientData);
-      // console.log(data);
-    }
     fetchData();
   }, []);
+
 
   return (
     <View style={styles.background}>
@@ -79,17 +125,36 @@ const patientScreen = () => {
       </View>
       <FlatList
         data={filteredData}
-        renderItem={renderItem}
+        renderItem={item =>
+          renderItem(item, visible, setVisible,id,setId, name, setName, age, setAge, functionName,setFunctionName)
+        }
         numColumns={2}
         keyExtractor={item => item.name}
         setVisible={setVisible}
+        visible={visible}
       />
-      <TouchableOpacity style={styles.floatingButton}>
-        <Text style={styles.floatButtonText} onPress={() => setVisible(true)}>+</Text>
+      <TouchableOpacity style={styles.floatingButton}  onPress={() => setVisible(true) + setFunctionName('post') + setName("") + setAge("") + setId("")}>
+        <Text
+          style={styles.floatButtonText}
+         >
+          +
+        </Text>
       </TouchableOpacity>
       <Modal isVisible={visible} transparent={false} style={styles.modalForm}>
         <View>
-          <Form />
+          <Form
+            setVisible={setVisible}
+            visible={visible}
+            id={id}
+            name={name}
+            age={age}
+            setId={setId}
+            setName={setName}
+            setAge={setAge}
+            functionName={functionName}
+            setFunctionName={setFunctionName}
+            fetchData = {fetchData}
+          />
         </View>
       </Modal>
     </View>
@@ -162,12 +227,12 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 20,
   },
-  modalForm : {
-    backgroundColor : "#D3E6E5",
-    width : "100%",
-    margin : 0,
-
-  }
+  modalForm: {
+    backgroundColor: '#D3E6E5',
+    width: '100%',
+    margin: 0,
+  },
 });
 
+// module.exports = {fetchData : fetchData , patientScreen : patientScreen}   ;
 export default patientScreen;
