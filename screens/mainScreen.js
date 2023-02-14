@@ -1,4 +1,6 @@
+
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+
 
 const MainScreen = ({navigation}) => {
   return (
@@ -7,6 +9,7 @@ const MainScreen = ({navigation}) => {
         <Text style={{color: 'black', fontSize: 20, padding: 20}}>
           Choose an Option...
         </Text>
+
         <TouchableOpacity
           onPress={() => navigation.navigate('DoctorScreen')}
           style={styles.touchableOpacity}>
@@ -17,6 +20,7 @@ const MainScreen = ({navigation}) => {
           style={styles.touchableOpacity}>
           <Text style={styles.Card}>Patient</Text>
         </TouchableOpacity>
+
       </View>
     </View>
   );
@@ -41,6 +45,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
   },
+
   touchableOpacity: {},
   container: {
     marginTop: '45%',
@@ -50,5 +55,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
 export default MainScreen;

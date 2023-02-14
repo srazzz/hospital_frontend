@@ -1,110 +1,58 @@
-import React, {useState} from 'react';
-import {FlatList, View, Text, StyleSheet, TextInput, Image} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  FlatList,
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
+import Modal from 'react-native-modal';
+import {connection} from '../connection';
+import Form from './Form';
 
-const data = [
-  {
-    firstName: 'Scotty',
-    lastName: 'Trevorrow',
-  },
-  {
-    firstName: 'Bernarr',
-    lastName: 'Armatage',
-  },
-  {
-    firstName: 'Carlynn',
-    lastName: 'Kivlehan',
-  },
-  {
-    firstName: 'Ferrell',
-    lastName: 'Giroldi',
-  },
-  {
-    firstName: 'Thayne',
-    lastName: 'Carlow',
-  },
-  {
-    firstName: 'Webb',
-    lastName: 'Cordoba',
-  },
-  {
-    firstName: 'Sunshine',
-    lastName: 'Ullock',
-  },
-  {
-    firstName: 'Lamont',
-    lastName: 'MacScherie',
-  },
-  {
-    firstName: 'Atlanta',
-    lastName: 'Tyers',
-  },
-  {
-    firstName: 'Harriet',
-    lastName: 'Alldread',
-  },
-  {
-    firstName: 'Chrissie',
-    lastName: 'Caddie',
-  },
-  {
-    firstName: 'Siobhan',
-    lastName: 'de Najera',
-  },
-  {
-    firstName: 'Ondrea',
-    lastName: 'Cumming',
-  },
-  {
-    firstName: 'Phillipe',
-    lastName: 'Ames',
-  },
-  {
-    firstName: 'Dex',
-    lastName: 'Woodwind',
-  },
-  {
-    firstName: 'Van',
-    lastName: 'Petyakov',
-  },
-  {
-    firstName: 'Violet',
-    lastName: 'Weatherhogg',
-  },
-  {
-    firstName: 'Terence',
-    lastName: 'Clewley',
-  },
-  {
-    firstName: 'Portia',
-    lastName: 'De Haven',
-  },
-  {
-    firstName: 'Penny',
-    lastName: 'Petren',
-  },
-  {
-    firstName: 'Wilmer',
-    lastName: 'Grimwood',
-  },
-];
-
-const renderItem = ({item}) => (
+const renderItem = ({item, setVisible}) => (
+  
   <View style={styles.box}>
-    <Text style={styles.firstname}>
-      first Name : {item.firstName}
+    <TouchableOpacity
+    //  onPress={() => setVisible(true)}
+      style={styles.editOption}
+      // onPress ={setVisible}
+      // onPress={() => setVisible(true)}
+    >
+      <Text style={{color: 'black', alignItems: 'center'}}> E</Text>
+    </TouchableOpacity>
+    <Text style={styles.name}>
+      Name : {item.name}
       {'\n'}
     </Text>
-    <Text style={styles.lastname}>
-      last Name : {item.lastName} {'\n'}
+    <Text style={styles.age}>
+      age : {item.age}
+      {'\n'}
     </Text>
   </View>
 );
 
-const PatientScreen = () => {
+const patientScreen = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const filteredData = data.filter(person =>
-    person.lastName.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  const [data, setData] = useState('');
+  const [visible ,setVisible] = useState(false)
+  const filteredData =
+    data &&
+    data.filter(person =>
+      person.name.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+
+  useEffect(() => {
+    async function fetchData() {
+      let patientData = await connection('patients');
+      setData(patientData);
+      // console.log(data);
+    }
+    fetchData();
+  }, []);
+
   return (
     <View style={styles.background}>
       <View
@@ -133,8 +81,17 @@ const PatientScreen = () => {
         data={filteredData}
         renderItem={renderItem}
         numColumns={2}
-        keyExtractor={item => item.lastName}
+        keyExtractor={item => item.name}
+        setVisible={setVisible}
       />
+      <TouchableOpacity style={styles.floatingButton}>
+        <Text style={styles.floatButtonText} onPress={() => setVisible(true)}>+</Text>
+      </TouchableOpacity>
+      <Modal isVisible={visible} transparent={false} style={styles.modalForm}>
+        <View>
+          <Form />
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -151,28 +108,66 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 5,
   },
-  firstname: {
+  name: {
     color: '#D3E6E6',
     textAlign: 'left',
     justifyContent: 'center',
   },
-  lastname: {
+  age: {
     color: '#D3E6E6',
     textAlign: 'left',
     justifyContent: 'center',
   },
   box: {
+    // flex: 1 / 2,
     width: '48%',
-    backgroundColor: '#1B4646',
+    backgroundColor: '#3B6474',
     margin: 4,
     borderRadius: 12,
     textAlign: 'center',
     height: 250,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 5,
+    borderWidth: 4,
     borderColor: 'black',
   },
+  floatingButton: {
+    backgroundColor: '#D3E6E5',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    borderColor: 'black',
+    borderWidth: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    // top : "89%",
+    // left : "80%",
+    top: 603,
+    left: 290,
+  },
+  editOption: {
+    backgroundColor: '#D3E6E5',
+    width: 25,
+    height: 25,
+    borderRadius: 30,
+    borderColor: 'black',
+    borderWidth: 2,
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 5,
+    right: 10,
+  },
+  floatButtonText: {
+    color: 'black',
+    fontSize: 20,
+  },
+  modalForm : {
+    backgroundColor : "#D3E6E5",
+    width : "100%",
+    margin : 0,
+
+  }
 });
 
-export default PatientScreen;
+export default patientScreen;
