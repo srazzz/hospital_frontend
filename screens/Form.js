@@ -43,13 +43,13 @@ const Form = props => {
       } else {
         Alert.alert('Info', 'entered wrong data'); //alert not opening
       }
-      await props.fetchData();
+      await props.fetchData(props.setData,props.data);
     } else {
       // setId(id)
-      // console.log(name,age,id,"is data tehre")
+      console.log(name,age,id,props.data,"is data tehre")
       const changedData = putData(id, name, age, 'patients');
       // console.log("changeed data is", changedData)
-      await props.fetchData();
+      await props.fetchData(props.setData,props.data);
       if (changedData.name !== '' && changedData.age !== '') {
         // props.fetchData()
         Alert.alert('Info', ' data updated');
