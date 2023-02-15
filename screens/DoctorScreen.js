@@ -9,77 +9,138 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
+import Modal from 'react-native-modal';
 import {connection, del} from '../connection';
+import Form from './DoctorForm';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 
+// To fetch the data from api
+const fetchData = async (setData, data) => {
+  // console.log('fetched');
+  let doctorData = await connection('doctors');
+  setData(doctorData);
+};
 
-const DoctorScreen = () => {
+// on pressing edit option
+const editOptionFunctions = (
+  visible,
+  setVisible,
+  setId,
+  setName,
+  setspecialty,
+  id,
+  name,
+  specialty,
+  functionName,
+  setFunctionName,
+) => {
+  //to display patient details before editing
+  setVisible(true);
+  setId(id);
+  setName(name);
+  setspecialty(specialty);
+  setFunctionName('put');
+};
+
+// on pressing delete option
+const delOptionFunctions = (id, setData, data) => {
+  Alert.alert('Are you sure', 'Delete card', [
+    // asking for confirmation
+    {
+      text: 'Cancel',
+      style: 'cancel',
+    },
+    {
+      text: 'OK',
+      onPress: () => {
+        console.log('ok pressed', id);
+        del(id, 'doctors') + fetchData(setData, data); //deleting the data by id and refreshing page
+        console.log('delted');
+      },
+    },
+  ]);
+};
+
+const renderItem = (
+  item,
+  visible,
+  setVisible,
+  id,
+  setId,
+  name,
+  setName,
+  specialty,
+  setspecialty,
+  functionName,
+  setFunctionName,
+  setData,
+  data,
+) => (
+  <View style={styles.box}>
+    <TouchableOpacity
+      style={styles.delOption}
+      onPress={() => delOptionFunctions(item.item._id, setData, data)}>
+      <Text style={{color: 'black', alignItems: 'center', textAlign: 'center'}}>
+        <Icon name="delete" size={15} />
+      </Text>
+    </TouchableOpacity>
+    <TouchableOpacity
+      style={styles.editOption}
+      onPress={() =>
+        editOptionFunctions(
+          visible,
+          setVisible,
+          setId,
+          setName,
+          setspecialty,
+          item.item._id,
+          item.item.name,
+          item.item.specialty,
+          functionName,
+          setFunctionName,
+        )
+      }>
+      <Text style={{color: 'black', alignItems: 'center', textAlign: 'center'}}>
+        <EntypoIcon name={'pencil'} size={15} />
+      </Text>
+    </TouchableOpacity>
+
+    <Text style={styles.name}>
+      Name : {item.item.name}
+      {'\n'}
+    </Text>
+    <Text style={styles.specialty}>
+      specialty : {item.item.specialty}
+      {'\n'}
+    </Text>
+  </View>
+);
+
+const DoctorScreen = ({navigation: goBack}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [data, setData] = useState('');
+  const [visible, setVisible] = useState(false);
+  const [id, setId] = useState('');
+  const [name, setName] = useState('');
+  const [specialty, setspecialty] = useState('');
+  const [functionName, setFunctionName] = useState('');
   const filteredData =
     data &&
     data.filter(person =>
       person.name.toLowerCase().includes(searchTerm.toLowerCase()),
     );
 
-    async function fetchData() {
-      console.log('fetched');
-      let doctorData = await connection('doctors');
-      setData(doctorData);
-    }
   useEffect(() => {
-    fetchData();
+    fetchData(setData, data);
   }, []);
 
-  const delOption =_id => {
-    Alert.alert('Are you sure', 'Delete card', [
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {text: 'OK', 
-      onPress: () => {del(_id) + fetchData()}
-    },
-    ]);
-  };
-  const renderItem = ({item}) => (
-    <View style={styles.box}>
-      <TouchableOpacity
-        style={styles.delOption}
-        onPress={() => delOption(item._id) }>
-        <Text style={{color: 'black', alignItems: 'center', textAlign: 'center'}}
-        >
-          <Icon name='delete' size={15} />
-        </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-        style={styles.editOption}
-        >
-        <Text style={{color: 'black', alignItems: 'center', textAlign: 'center'}}
-        >
-          <EntypoIcon name={'pencil'} size={15} />
-        </Text>
-        </TouchableOpacity>
-  
-      <Text style={styles.firstname}>
-        Name : {item.name}
-        {'\n'}
-      </Text>
-      <Text style={styles.firstname}>
-        id : {item._id}
-        {'\n'}
-      </Text>
-      <Text style={styles.lastname}>
-        speciality : {item.specialty}
-        {'\n'}
-      </Text>
-    </View>
-  );
-  
   return (
     <View style={styles.background}>
+      {/* <TouchableOpacity style={styles.backIcon} onPress={() => goBack()}>
+        <Icon name="arrow-back-ios" size={30} style={{color: 'red'}} />
+        <Text style={{color: 'black', fontSize: 10}}>GoBack</Text>
+      </TouchableOpacity> */}
       <View
         style={{
           flexDirection: 'row',
@@ -92,7 +153,7 @@ const DoctorScreen = () => {
           borderWidth: 2,
         }}>
         <TextInput
-          placeholder="Doctor Search Here...."
+          placeholder="doctor Search Here...."
           placeholderTextColor="#000"
           style={styles.searchBar}
           onChangeText={text => setSearchTerm(text)}
@@ -104,16 +165,59 @@ const DoctorScreen = () => {
       </View>
       <FlatList
         data={filteredData}
-        renderItem={renderItem}
+        renderItem={item =>
+          renderItem(
+            item,
+            visible,
+            setVisible,
+            id,
+            setId,
+            name,
+            setName,
+            specialty,
+            setspecialty,
+            functionName,
+            setFunctionName,
+            setData,
+            data,
+          )
+        }
         numColumns={2}
         keyExtractor={item => item.name}
+        setVisible={setVisible}
+        visible={visible}
       />
       <TouchableOpacity
         style={styles.floatingButton}
-        // onPress = {postData()}
-      >
+        onPress={() =>
+          setVisible(true) +
+          setFunctionName('post') +
+          setName('') +
+          setspecialty('') +
+          setId('') +
+          navigation.navigate('Signup')
+        }>
         <Text style={styles.floatButtonText}>+</Text>
       </TouchableOpacity>
+      {/* <Modal isVisible={visible} transparent={false} style={styles.modalForm}>
+        <View>
+          <Form
+            setVisible={setVisible}
+            visible={visible}
+            id={id}
+            name={name}
+            specialty={specialty}
+            setId={setId}
+            setName={setName}
+            setspecialty={setspecialty}
+            functionName={functionName}
+            setFunctionName={setFunctionName}
+            fetchData={fetchData}
+            data={data}
+            setData={setData}
+          />
+        </View>
+      </Modal> */}
     </View>
   );
 };
@@ -129,21 +233,20 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     marginBottom: 5,
-    margin: 5,
   },
-  firstname: {
+  name: {
     color: '#D3E6E6',
     textAlign: 'left',
     justifyContent: 'center',
   },
-  lastname: {
+  specialty: {
     color: '#D3E6E6',
     textAlign: 'left',
     justifyContent: 'center',
   },
   box: {
     // flex: 1 / 2,
-    width: '47%',
+    width: '48%',
     backgroundColor: '#3B6474',
     margin: 4,
     borderRadius: 12,
@@ -164,12 +267,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    top: 670,
+    // top : "89%",
+    // left : "80%",
+    top: 603,
     left: 290,
-  },
-  floatButtonText: {
-    color: 'black',
-    fontSize: 20,
   },
   delOption: {
     backgroundColor: '#D3E6E5',
@@ -195,6 +296,24 @@ const styles = StyleSheet.create({
     top: 5,
     right: 40,
   },
+  floatButtonText: {
+    color: 'black',
+    fontSize: 20,
+  },
+  modalForm: {
+    backgroundColor: '#D3E6E5',
+    width: '100%',
+    margin: 0,
+  },
+  backIcon: {
+    position: 'absolute',
+    top: 18,
+    left: 18,
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
 });
 
+// module.exports = {fetchData : fetchData , patientScreen : patientScreen}   ;
 export default DoctorScreen;

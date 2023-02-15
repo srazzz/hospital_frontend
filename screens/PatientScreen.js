@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {connection, del} from '../connection';
-import Form from './Form';
+import Form from './PatientForm';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 
@@ -113,7 +113,7 @@ const renderItem = (
   </View>
 );
 
-const patientScreen = () => {
+const PatientScreen = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [data, setData] = useState('');
   const [visible, setVisible] = useState(false);
@@ -298,4 +298,4 @@ const styles = StyleSheet.create({
 });
 
 // module.exports = {fetchData : fetchData , patientScreen : patientScreen}   ;
-export default patientScreen;
+export default PatientScreen;

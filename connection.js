@@ -12,6 +12,7 @@ export const connection = async type => {
 };
 
 export const postData = (name, age, type) => {
+  console.log(`http://192.168.0.158:3001/${type}`)
   return new Promise(async (resolve, reject) => {
     try {
       const response = await fetch(`http://192.168.0.158:3001/${type}`, {
@@ -19,8 +20,9 @@ export const postData = (name, age, type) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({name: name, age: age}),
+        body: JSON.stringify({name, specialty: age}),
       });
+      console.log(response)
       const data = await response.json();
       resolve(data);
     } catch (error) {
