@@ -7,28 +7,12 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
-import {connection} from '../connection';
+import {connection, del} from '../connection';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
 
-const renderItem = ({item}) => (
-  <View style={styles.box}>
-    <TouchableOpacity
-      style={styles.editOption}
-      // onPress={() => navigation.navigate('AddDoctorScreen')}
-      >
-      <Text style={{color : "black" , alignItems : "center"}}>  E</Text>
-    </TouchableOpacity>
-
-    <Text style={styles.firstname}>
-      Name : {item.name}
-      {'\n'}
-    </Text>
-    <Text style={styles.lastname}>
-      speciality : {item.specialty}
-      {'\n'}
-    </Text>
-  </View>
-);
 
 const DoctorScreen = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -39,15 +23,61 @@ const DoctorScreen = () => {
       person.name.toLowerCase().includes(searchTerm.toLowerCase()),
     );
 
-  useEffect(() => {
     async function fetchData() {
+      console.log('fetched');
       let doctorData = await connection('doctors');
       setData(doctorData);
-      // console.log('777777777777777777777777777777777777777777777777777777777777',data);
     }
+  useEffect(() => {
     fetchData();
   }, []);
 
+  const delOption =_id => {
+    Alert.alert('Are you sure', 'Delete card', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'OK', 
+      onPress: () => {del(_id) + fetchData()}
+    },
+    ]);
+  };
+  const renderItem = ({item}) => (
+    <View style={styles.box}>
+      <TouchableOpacity
+        style={styles.delOption}
+        onPress={() => delOption(item._id) }>
+        <Text style={{color: 'black', alignItems: 'center', textAlign: 'center'}}
+        >
+          <Icon name='delete' size={15} />
+        </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+        style={styles.editOption}
+        >
+        <Text style={{color: 'black', alignItems: 'center', textAlign: 'center'}}
+        >
+          <EntypoIcon name={'pencil'} size={15} />
+        </Text>
+        </TouchableOpacity>
+  
+      <Text style={styles.firstname}>
+        Name : {item.name}
+        {'\n'}
+      </Text>
+      <Text style={styles.firstname}>
+        id : {item._id}
+        {'\n'}
+      </Text>
+      <Text style={styles.lastname}>
+        speciality : {item.specialty}
+        {'\n'}
+      </Text>
+    </View>
+  );
+  
   return (
     <View style={styles.background}>
       <View
@@ -78,8 +108,9 @@ const DoctorScreen = () => {
         numColumns={2}
         keyExtractor={item => item.name}
       />
-      <TouchableOpacity style={styles.floatingButton}
-      // onPress = {postData()}
+      <TouchableOpacity
+        style={styles.floatingButton}
+        // onPress = {postData()}
       >
         <Text style={styles.floatButtonText}>+</Text>
       </TouchableOpacity>
@@ -112,7 +143,7 @@ const styles = StyleSheet.create({
   },
   box: {
     // flex: 1 / 2,
-    width: '48%',
+    width: '47%',
     backgroundColor: '#3B6474',
     margin: 4,
     borderRadius: 12,
@@ -133,14 +164,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    // top : "89%",
-    // left : "80%",
-    top: 603,
+    top: 670,
     left: 290,
   },
   floatButtonText: {
     color: 'black',
     fontSize: 20,
+  },
+  delOption: {
+    backgroundColor: '#D3E6E5',
+    width: 25,
+    height: 25,
+    borderRadius: 30,
+    borderColor: 'black',
+    borderWidth: 2,
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 5,
+    right: 10,
   },
   editOption: {
     backgroundColor: '#D3E6E5',
@@ -151,8 +192,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     justifyContent: 'center',
     position: 'absolute',
-    top : 5,
-    right :10,
+    top: 5,
+    right: 40,
   },
 });
 
