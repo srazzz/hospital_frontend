@@ -13,56 +13,57 @@ import {connection, del} from '../connection';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 
-
 const DoctorScreen = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [data, setData] = useState('');
+  
   const filteredData =
     data &&
     data.filter(person =>
       person.name.toLowerCase().includes(searchTerm.toLowerCase()),
     );
 
-    async function fetchData() {
-      console.log('fetched');
-      let doctorData = await connection('doctors');
-      setData(doctorData);
-    }
+  async function fetchData() {
+    let doctorData = await connection('doctors');
+    setData(doctorData);
+  }
   useEffect(() => {
     fetchData();
   }, []);
 
-  const delOption =_id => {
-    Alert.alert('Are you sure', 'Delete card', [
+  const delOption = _id => {
+    Alert.alert('Are you sure', 'Delete card',
+    [
       {
         text: 'Cancel',
         onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
       },
-      {text: 'OK', 
-      onPress: () => {del(_id) + fetchData()}
-    },
+      {
+        text: 'OK',
+        onPress: () => {
+          console.log('ok Pressed'),
+          del(_id) + fetchData();
+        },
+      },
     ]);
   };
   const renderItem = ({item}) => (
     <View style={styles.box}>
       <TouchableOpacity
         style={styles.delOption}
-        onPress={() => delOption(item._id) }>
-        <Text style={{color: 'black', alignItems: 'center', textAlign: 'center'}}
-        >
-          <Icon name='delete' size={15} />
+        onPress={() => delOption(item._id)}>
+        <Text
+          style={{color: 'black', alignItems: 'center', textAlign: 'center'}}>
+          <Icon name="delete" size={15} />
         </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-        style={styles.editOption}
-        >
-        <Text style={{color: 'black', alignItems: 'center', textAlign: 'center'}}
-        >
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.editOption}>
+        <Text
+          style={{color: 'black', alignItems: 'center', textAlign: 'center'}}>
           <EntypoIcon name={'pencil'} size={15} />
         </Text>
-        </TouchableOpacity>
-  
+      </TouchableOpacity>
+
       <Text style={styles.firstname}>
         Name : {item.name}
         {'\n'}
@@ -77,7 +78,7 @@ const DoctorScreen = () => {
       </Text>
     </View>
   );
-  
+
   return (
     <View style={styles.background}>
       <View

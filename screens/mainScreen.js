@@ -11,12 +11,12 @@ const MainScreen = ({navigation}) => {
         </Text>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('DoctorScreen')}
+          onPress={() => navigation.navigate('Login')}
           style={styles.touchableOpacity}>
           <Text style={styles.Card}>Doctor</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('PatientScreen')}
+          onPress={() => navigation.navigate('patientScreen')}
           style={styles.touchableOpacity}>
           <Text style={styles.Card}>Patient</Text>
         </TouchableOpacity>
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 
   touchableOpacity: {},
   container: {
-    marginTop: '45%',
+    marginTop: '55%',
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
