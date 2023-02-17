@@ -117,7 +117,7 @@ const renderItem = (
   </View>
 );
 
-const DoctorScreen = ({navigation: goBack}) => {
+const DoctorScreen = ({navigation: {goBack}, navigation}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [data, setData] = useState('');
   const [visible, setVisible] = useState(false);
@@ -137,10 +137,9 @@ const DoctorScreen = ({navigation: goBack}) => {
 
   return (
     <View style={styles.background}>
-      {/* <TouchableOpacity style={styles.backIcon} onPress={() => goBack()}>
-        <Icon name="arrow-back-ios" size={30} style={{color: 'red'}} />
-        <Text style={{color: 'black', fontSize: 10}}>GoBack</Text>
-      </TouchableOpacity> */}
+      <TouchableOpacity style={styles.backIcon} onPress={() => goBack()}>
+        <Icon name="arrow-back-ios" size={30} style={{color: 'black'}} />
+      </TouchableOpacity>
       <View
         style={{
           flexDirection: 'row',
@@ -267,10 +266,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    // top : "89%",
-    // left : "80%",
-    top: 603,
-    left: 290,
+    top: '89%',
+    left: '79%',
+    // top: 603,
+    // left: 290,
   },
   delOption: {
     backgroundColor: '#D3E6E5',
@@ -306,12 +305,10 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   backIcon: {
-    position: 'absolute',
+    position: 'relative',
     top: 18,
     left: 18,
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
+    marginBottom: '5%',
   },
 });
 
