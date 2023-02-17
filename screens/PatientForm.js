@@ -31,6 +31,7 @@ const Form = props => {
   // if(error.name !=="" && error.age !== "")
   // Alert.alert("enter details correctly",{error})
   //   };
+
   const functionOnPressSubmit = async () => {
     // console.log("function name",props.functionName)
     if (props.functionName === 'post') {

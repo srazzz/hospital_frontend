@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {connection, del} from '../connection';
-// import Form from './patientForm';
+import Form from './PatientForm';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 
@@ -38,7 +38,6 @@ const editOptionFunctions = (
   setName(name);
   setAge(age);
   setFunctionName('put');
-  //  console.log(functionName,"heyyyyyyyyyyyyyyyyyyy");
 };
 
 const delOptionFunctions = (id,setData,data) => {
@@ -59,6 +58,8 @@ const delOptionFunctions = (id,setData,data) => {
   ]);
 };
 
+
+
 const renderItem = (
   item,
   visible,
@@ -71,9 +72,13 @@ const renderItem = (
   setAge,
   functionName,
   setFunctionName,
-  setData,data
+  setData,data,
+  navigation
 ) => (
-  <View style={styles.box}>
+  <TouchableOpacity
+  onPress={() => navigation.navigate('Display', { name: item.item.name, age: item.item.age })}
+  style={styles.box}
+  >
     <TouchableOpacity
       style={styles.delOption}
       onPress={() => delOptionFunctions(item.item._id,setData,data)}>
@@ -102,6 +107,7 @@ const renderItem = (
       </Text>
     </TouchableOpacity>
 
+    <View style={{flex:1, flexDirection: 'column', alignItems: 'center'}}>
     <Text style={styles.name}>
       Name : {item.item.name}
       {'\n'}
@@ -110,10 +116,11 @@ const renderItem = (
       age : {item.item.age}
       {'\n'}
     </Text>
-  </View>
+    </View>
+   </TouchableOpacity>
 );
 
-const PatientScreen = () => {
+const PatientScreen = ({navigation}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [data, setData] = useState('');
   const [visible, setVisible] = useState(false);
@@ -171,6 +178,7 @@ const PatientScreen = () => {
             functionName,
             setFunctionName,
             setData,data,
+            navigation
           )
         }
         numColumns={2}
@@ -191,7 +199,7 @@ const PatientScreen = () => {
       </TouchableOpacity>
       <Modal isVisible={visible} transparent={false} style={styles.modalForm}>
         <View>
-          {/* <Form
+          <Form
             setVisible={setVisible}
             visible={visible}
             id={id}
@@ -205,7 +213,7 @@ const PatientScreen = () => {
             fetchData={fetchData}
             data={data}
             setData={setData}
-          /> */}
+          />
         </View>
       </Modal>
     </View>
@@ -235,7 +243,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   box: {
-    // flex: 1 / 2,
+    // display: 'flex',
+    // flex: 1,
+    flexDirection: 'row',
     width: '48%',
     backgroundColor: '#3B6474',
     margin: 4,
@@ -257,10 +267,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    // top : "89%",
-    // left : "80%",
-    top: 603,
-    left: 290,
+    top : "89%",
+    left : "80%",
   },
   delOption: {
     backgroundColor: '#D3E6E5',
@@ -271,7 +279,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     justifyContent: 'center',
     position: 'absolute',
-    top: 5,    
+    top: 5,
     right: 10,
   },
   editOption: {

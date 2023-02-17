@@ -1,36 +1,63 @@
-export const connection = async(type) => {
-    try {
-      const response = await fetch(`http://192.168.0.181:3001/${type}`);
-      const json = await response.json();
-      return(type === 'doctors' ? json.doctors : json.patients);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      // setLoading(false);
-    }
-
+// import { fetchFunction } from './PatientScreen';
+export const connection = async type => {
+  try {
+    const response = await fetch(`http://192.168.0.182:3001/${type}`);
+    const json = await response.json();
+    // console.log(json, '111111111')
+    return type === 'doctors' ? json.doctors : json.patients;
+  } catch (error) {
+    console.error(error);
+  } finally {
+  }
 };
 
-// export const postData = async (name, age, type) => {
-//   try {
-//     const response = await fetch(`http://192.168.0.181:3001/${type}`, {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json'
-//       },
-//       body: JSON.stringify({ name: name, age: age  }),
-//     });
-//     const data = await response.json();
-//     return data;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
+export const postData = (name, age, type) => {
+  console.log(`http://192.168.0.182:3001/${type}`)
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch(`http://192.168.0.182:3001/${type}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({name, specialty: age}),
+      });
+      console.log(response)
+      const data = await response.json();
+      resolve(data);
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+};
 
-export const del = async (_id) => {
+export const putData = async (id,name,age, type) => {
+   return new Promise(async (resolve, reject) => {
+  try {
+    // console.log(id,name,age,"theretehre")
+    const response = await fetch(`http://192.168.0.182:3001/${type}/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({name : name , age: age}),
+    });
+    const data = await response.json();
+    // console.log(data,"theretehre")
+    resolve(data);
+  } catch (error) {
+    console.error(error);
+    reject(error);
+  }
+  });
+};
+
+
+export const del = async (_id , type) => {
   return new Promise(async (reslove, reject) => {
   try {
-    const response = await fetch(`http://192.168.0.181:3001/doctors/${_id}`, {
+    const response = await fetch(`http://192.168.0.182:3001/${type}/${_id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -44,23 +71,3 @@ export const del = async (_id) => {
   }
 });
 };
-
-
-// export const putData = async (name, age, type ) => {
-//   try {
-//     const response = await fetch(`http://192.168.0.181:3001/${type}`, {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json'
-//       },
-//       body: JSON.stringify({ name: name, age: age  }),
-//     });
-//     const data = await response.json();
-//     return data;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-
-
-

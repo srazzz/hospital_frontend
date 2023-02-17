@@ -1,4 +1,3 @@
-
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 
@@ -9,9 +8,13 @@ const MainScreen = ({navigation}) => {
         <Text style={{color: 'black', fontSize: 20, padding: 20}}>
           Choose an Option...
         </Text>
-
         <TouchableOpacity
           onPress={() => navigation.navigate('Login')}
+          style={styles.touchableOpacity}>
+          <Text style={styles.Card}>ADMIN</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('DoctorScreen')}
           style={styles.touchableOpacity}>
           <Text style={styles.Card}>Doctor</Text>
         </TouchableOpacity>
@@ -48,7 +51,7 @@ const styles = StyleSheet.create({
 
   touchableOpacity: {},
   container: {
-    marginTop: '55%',
+    marginTop: '45%',
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
