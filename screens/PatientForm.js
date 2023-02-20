@@ -80,27 +80,31 @@ const Form = props => {
         onChangeText={setAge}
         placeholder="Enter your age"
       />
-      <View>{/* <Text style={{color : "red"}} on>{error.age}</Text> */}</View>
-
-      <Button
-        style={styles.submitButton}
+     <View style={styles.btnContainer}>
+     <Button
         title="Submit"
-        // onPress={() => validate(name, age)}
-        //   onPress={() => Alert.alert('Fill the values', 'created')}
         onPress={() =>
-          functionOnPressSubmit(name, age, 'patients') + props.setVisible(false)
-        }
+          functionOnPressSubmit(name, age, 'patients') + props.setVisible(false)}
+        
       />
       <Button
-        style={styles.submitButton}
         title="cancel"
         onPress={() => props.setVisible(false)}
       />
+     </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  btnContainer: {
+    flexDirection: 'row-reverse',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    // backgroundColor: '#fff',
+    padding: 20,
+    margin: 20,
+  },
   container: {
     backgroundColor: '#3B6474',
     width: '90%',
@@ -115,10 +119,6 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     color: 'white',
     fontSize: 30,
-  },
-  submitButton: {
-    marginTop: 5,
-    marginTop: 10,
   },
   labelName: {
     fontSize: 20,

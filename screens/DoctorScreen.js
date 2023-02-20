@@ -13,7 +13,7 @@ import {
 // import {connection, del} from '../../connection';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
-
+import { connection,del } from '../connection';
 // To fetch the data from api
 const fetchData = async (setData, data) => {
   let doctorData = await connection('doctors');

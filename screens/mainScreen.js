@@ -1,7 +1,7 @@
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 
-const MainScreen = ({navigation}) => {
+const MainScreen = ({navigation}) => { 
   return (
     <View style={styles.background}>
       <View style={styles.container}>

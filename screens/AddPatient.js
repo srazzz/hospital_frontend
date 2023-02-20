@@ -14,8 +14,6 @@ const AddPatientForm = props => {
   const patient = {name: name, age: age};
   const addPatient = () => {
     props.patientData.push(patient);
-    // console.log(patient)
-    // console.log(props.patientData)
     props.setVisible(false);
     Alert.alert('Information', 'patient added');
   };
@@ -83,7 +81,7 @@ const styles = StyleSheet.create({
   },
   buttonAlign: {
     flex: 1 / 2,
-    flexDirection: 'row',
+    flexDirection: 'column',
     // alignItems: 'center',
     justifyContent: 'center',
     marginTop: 0,

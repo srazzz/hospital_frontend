@@ -1,7 +1,7 @@
 // import { fetchFunction } from './PatientScreen';
 export const connection = async type => {
   try {
-    const response = await fetch(`http://192.168.0.182:3001/${type}`);
+    const response = await fetch(`http://192.168.0.183:3001/${type}`);
     const json = await response.json();
     // console.log(json, '111111111')
     return type === 'doctors' ? json.doctors : json.patients;
@@ -12,10 +12,10 @@ export const connection = async type => {
 };
 
 export const postData = (name, age, type) => {
-  console.log(`http://192.168.0.182:3001/${type}`)
+  console.log(`http://192.168.0.183:3001/${type}`)
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch(`http://192.168.0.182:3001/${type}`, {
+      const response = await fetch(`http://192.168.0.183:3001/${type}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ export const putData = async (id,name,age, type) => {
    return new Promise(async (resolve, reject) => {
   try {
     // console.log(id,name,age,"theretehre")
-    const response = await fetch(`http://192.168.0.182:3001/${type}/${id}`, {
+    const response = await fetch(`http://192.168.0.183:3001/${type}/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ export const putData = async (id,name,age, type) => {
 export const del = async (_id , type) => {
   return new Promise(async (reslove, reject) => {
   try {
-    const response = await fetch(`http://192.168.0.182:3001/${type}/${_id}`, {
+    const response = await fetch(`http://192.168.0.183:3001/${type}/${_id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
