@@ -11,8 +11,9 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-modal';
-import AddPatient from './AddPatient';
-import {postDoctorData, postPatientData} from './ApiCalls';
+import AddPatient from './doctorScreens/AddPatient';
+import {postDoctorData, postPatientData} from './doctorScreens/ApiCalls';
+
 const renderItem = (item, index) => {
   // console.log(item);
   return (
@@ -33,42 +34,10 @@ const SignupForm = ({navigation: {goBack}}) => {
   const [patientData, setPatientData] = useState([]);
   var errors = [];
   var index = 0;
+
   const handleSignUp = async () => {
-    const validation = () => {
-      if (name.trim() === '') {
-        errors[index++] = 'Name is required';
-      }
-      if (specialty.trim() === '') {
-        errors[index++] = 'Specialty is required';
-      }
-      if (email.trim() === '') {
-        errors[index++] = 'Email is required';
-      } else if (!/\S+@\S+\.\S+/.test(email)) {
-        errors[index++] = 'Email is invalid';
-      }
-      if (password.trim() === '') {
-        errors[index++] = 'Password is required';
-      } else if (password.length < 6) {
-        errors[index++] = 'Password must be at least 6 characters long';
-      }
-      if (confirmPassword.trim() === '') {
-        errors[index++] = 'Confirm password is required';
-      } else if (password !== confirmPassword) {
-        errors[index++] = 'Passwords do not match';
-      }
-
-      if (errors.length > 0) {
-        setVisible(true);
-      } else {
-        // perform sign-up
-      }
-      console.log(errors);
-    };
-    // validation();
-
-    // console.log('sign up presed');
-    // const patientIds = [];
     const data = await Promise.all(
+      //imp
       patientData.map(patient => {
         return postPatientData(
           patient.name,
@@ -77,26 +46,32 @@ const SignupForm = ({navigation: {goBack}}) => {
         );
       }),
     );
-    console.log(data, 'data in sinup', patientIds, 'final details');
     var patientIds = [];
-    data.map(eachId => {
-      console.log(eachId.patient._id);
+    // to create new patients
+    data.forEach(eachId => {
+      patientIds.push(eachId.patient._id);
     });
-    // const postedData = postDoctorData(
-    //   name,
-    //   specialty,
-    //   email,
-    //   password,
-    //   patientData,
-    //   'doctors',
-    // );
-    // if (postedData.message === '') {
-    //   Alert.alert('Information', 'New doctor added');
-    // } else {
-    //   Alert.alert('Information', postedData.message);
-    // }
-    // console.log(postedData, 'done');
-    // setPatientData([]); // finally this should happen to reset data
+
+    const postedData = await postDoctorData(
+      name,
+      specialty,
+      email,
+      password,
+      patientIds,
+      'doctors',
+    );
+    if (postedData.message === '') {
+      Alert.alert('Information', 'New doctor added');
+      setVisible(false);
+
+      // setConfirmPassword("")     ask pavan
+      // setEmail("")
+    } else {
+      Alert.alert('Information', postedData.message.toString(), 'error');
+    }
+    console.log(postedData, 'doctor posted data ');
+    setPatientData([]); // finally this should happen to reset data
+    console.log(data, 'data in sinup', patientIds, 'final details');
   };
 
   const addPatient = setVisible => {
