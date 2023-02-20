@@ -1,6 +1,4 @@
-
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-
 
 const MainScreen = ({navigation}) => {
   return (
@@ -11,16 +9,22 @@ const MainScreen = ({navigation}) => {
         </Text>
 
         <TouchableOpacity
+          onPress={() => navigation.navigate('Login')}
+          style={styles.touchableOpacity}>
+          <Text style={styles.Card}>Admin</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
           onPress={() => navigation.navigate('DoctorScreen')}
           style={styles.touchableOpacity}>
           <Text style={styles.Card}>Doctor</Text>
         </TouchableOpacity>
+
         <TouchableOpacity
           onPress={() => navigation.navigate('PatientScreen')}
           style={styles.touchableOpacity}>
           <Text style={styles.Card}>Patient</Text>
         </TouchableOpacity>
-
       </View>
     </View>
   );

@@ -9,118 +9,66 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import Modal from 'react-native-modal';
-import {connection, del} from '../connection';
-import Form from './PatientForm';
+// import Modal from 'react-native-modal';
+import {connection, del} from '../../connection';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 
-const fetchData = async (setData,data) => {
-  console.log('fetched');
-  let patientData = await connection('patients');
-  setData(patientData);
+// To fetch the data from api
+const fetchData = async (setData, data) => {
+  let doctorData = await connection('doctors');
+  setData(doctorData);
 };
 
+// on pressing edit option
 const editOptionFunctions = (
   visible,
   setVisible,
   setId,
   setName,
-  setAge,
+  setspecialty,
   id,
   name,
-  age,
+  specialty,
   functionName,
   setFunctionName,
 ) => {
+  //to display patient details before editing
   setVisible(true);
   setId(id);
   setName(name);
-  setAge(age);
+  setspecialty(specialty);
   setFunctionName('put');
-  //  console.log(functionName,"heyyyyyyyyyyyyyyyyyyy");
 };
 
-const delOptionFunctions = (id,setData,data) => {
+// on pressing delete option
+const delOptionFunctions = (id, setData, data) => {
   Alert.alert('Are you sure', 'Delete card', [
+    // asking for confirmation
     {
       text: 'Cancel',
-      onPress: () => console.log('Cancel Pressed'),
       style: 'cancel',
     },
     {
       text: 'OK',
       onPress: () => {
-        console.log("ok pressed",id)
-        del(id, 'patients') + fetchData(setData,data);
-        console.log("delted")
+        console.log('ok pressed', id);
+        del(id, 'doctors') + fetchData(setData, data); //deleting the data by id and refreshing page
+        console.log('delted');
       },
     },
   ]);
 };
 
-const renderItem = (
-  item,
-  visible,
-  setVisible,
-  id,
-  setId,
-  name,
-  setName,
-  age,
-  setAge,
-  functionName,
-  setFunctionName,
-  setData,data
-) => (
-  <View style={styles.box}>
-    <TouchableOpacity
-      style={styles.delOption}
-      onPress={() => delOptionFunctions(item.item._id,setData,data)}>
-      <Text style={{color: 'black', alignItems: 'center', textAlign: 'center'}}>
-        <Icon name="delete" size={15} />
-      </Text>
-    </TouchableOpacity>
-    <TouchableOpacity
-      style={styles.editOption}
-      onPress={() =>
-        editOptionFunctions(
-          visible,
-          setVisible,
-          setId,
-          setName,
-          setAge,
-          item.item._id,
-          item.item.name,
-          item.item.age,
-          functionName,
-          setFunctionName,
-        )
-      }>
-      <Text style={{color: 'black', alignItems: 'center', textAlign: 'center'}}>
-        <EntypoIcon name={'pencil'} size={15} />
-      </Text>
-    </TouchableOpacity>
-
-    <Text style={styles.name}>
-      Name : {item.item.name}
-      {'\n'}
-    </Text>
-    <Text style={styles.age}>
-      age : {item.item.age}
-      {'\n'}
-    </Text>
-  </View>
-);
-
-const PatientScreen = () => {
+const DoctorScreen = ({navigation: {goBack}, navigation}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [data, setData] = useState('');
   const [visible, setVisible] = useState(false);
   const [id, setId] = useState('');
   const [name, setName] = useState('');
-  const [age, setAge] = useState('');
+  const [specialty, setspecialty] = useState('');
   const [functionName, setFunctionName] = useState('');
+  const [email, setEmail] = useState('');
   const filteredData =
     data &&
     data.filter(person =>
@@ -128,11 +76,71 @@ const PatientScreen = () => {
     );
 
   useEffect(() => {
-    fetchData(setData,data);
+    fetchData(setData, data);
   }, []);
+
+  const renderItem = item => (
+    <TouchableOpacity
+      style={{width: '50%'}}
+      onPress={() =>
+        navigation.navigate('DoctorDetails', {
+          name: item.item.name,
+          specialty: item.item.specialty,
+          email: item.item.email,
+          patients: item.item.patients,
+        })
+      }>
+      <View style={styles.box}>
+        <TouchableOpacity
+          style={styles.delOption}
+          onPress={() => delOptionFunctions(item.item._id, setData, data)}>
+          <Text
+            style={{color: 'black', alignItems: 'center', textAlign: 'center'}}>
+            <Icon name="delete" size={15} />
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.editOption}
+          onPress={() =>
+            editOptionFunctions(
+              visible,
+              setVisible,
+              setId,
+              setName,
+              setspecialty,
+              item.item._id,
+              item.item.name,
+              item.item.specialty,
+              functionName,
+              setFunctionName,
+            )
+          }>
+          <Text
+            style={{color: 'black', alignItems: 'center', textAlign: 'center'}}>
+            <EntypoIcon name={'pencil'} size={15} />
+          </Text>
+        </TouchableOpacity>
+        <Text style={styles.name}>
+          Name : {item.item.name}
+          {'\n'}
+        </Text>
+        <Text style={styles.specialty}>
+          specialty : {item.item.specialty}
+          {'\n'}
+        </Text>
+        <Text style={styles.specialty}>
+          email : {item.item.email}
+          {'\n'}
+        </Text>
+      </View>
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.background}>
+      <TouchableOpacity style={styles.backIcon} onPress={() => goBack()}>
+        <Icon name="arrow-back-ios" size={30} style={{color: 'black'}} />
+      </TouchableOpacity>
       <View
         style={{
           flexDirection: 'row',
@@ -145,15 +153,12 @@ const PatientScreen = () => {
           borderWidth: 2,
         }}>
         <TextInput
-          placeholder="Patient Search Here...."
+          placeholder="doctor Search Here...."
           placeholderTextColor="#000"
           style={styles.searchBar}
           onChangeText={text => setSearchTerm(text)}
         />
-        <Image
-          source={require('../images/search_icon.png')}
-          style={{width: '15%', height: '80%', resizeMode: 'contain'}}
-        />
+        <Icon name="search" size={30} style={{color: 'black'}} />
       </View>
       <FlatList
         data={filteredData}
@@ -166,11 +171,15 @@ const PatientScreen = () => {
             setId,
             name,
             setName,
-            age,
-            setAge,
+            specialty,
+            setspecialty,
             functionName,
             setFunctionName,
-            setData,data,
+            setData,
+            data,
+            navigation,
+            email,
+            setEmail,
           )
         }
         numColumns={2}
@@ -184,22 +193,23 @@ const PatientScreen = () => {
           setVisible(true) +
           setFunctionName('post') +
           setName('') +
-          setAge('') +
-          setId('')
+          setspecialty('') +
+          setId('') +
+          navigation.navigate('Signup')
         }>
         <Text style={styles.floatButtonText}>+</Text>
       </TouchableOpacity>
-      <Modal isVisible={visible} transparent={false} style={styles.modalForm}>
+      {/* <Modal isVisible={visible} transparent={false} style={styles.modalForm}>
         <View>
           <Form
             setVisible={setVisible}
             visible={visible}
             id={id}
             name={name}
-            age={age}
+            specialty={specialty}
             setId={setId}
             setName={setName}
-            setAge={setAge}
+            setspecialty={setspecialty}
             functionName={functionName}
             setFunctionName={setFunctionName}
             fetchData={fetchData}
@@ -207,7 +217,7 @@ const PatientScreen = () => {
             setData={setData}
           />
         </View>
-      </Modal>
+      </Modal> */}
     </View>
   );
 };
@@ -223,20 +233,22 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     marginBottom: 5,
+    paddingLeft: 3,
+    paddingRight: 5,
   },
   name: {
     color: '#D3E6E6',
     textAlign: 'left',
     justifyContent: 'center',
   },
-  age: {
+  specialty: {
     color: '#D3E6E6',
     textAlign: 'left',
     justifyContent: 'center',
   },
   box: {
     // flex: 1 / 2,
-    width: '48%',
+    width: '96%',
     backgroundColor: '#3B6474',
     margin: 4,
     borderRadius: 12,
@@ -257,10 +269,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    // top : "89%",
-    // left : "80%",
-    top: 603,
-    left: 290,
+    top: '89%',
+    left: '79%',
+    // top: 603,
+    // left: 290,
   },
   delOption: {
     backgroundColor: '#D3E6E5',
@@ -295,7 +307,13 @@ const styles = StyleSheet.create({
     width: '100%',
     margin: 0,
   },
+  backIcon: {
+    position: 'relative',
+    top: 18,
+    left: 18,
+    marginBottom: '5%',
+  },
 });
 
 // module.exports = {fetchData : fetchData , patientScreen : patientScreen}   ;
-export default PatientScreen;
+export default DoctorScreen;
