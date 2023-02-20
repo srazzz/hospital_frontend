@@ -1,22 +1,25 @@
-
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 
-const MainScreen = ({navigation}) => {
+const MainScreen = ({navigation}) => { 
   return (
     <View style={styles.background}>
       <View style={styles.container}>
         <Text style={{color: 'black', fontSize: 20, padding: 20}}>
           Choose an Option...
         </Text>
-
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Login')}
+          style={styles.touchableOpacity}>
+          <Text style={styles.Card}>ADMIN</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate('DoctorScreen')}
           style={styles.touchableOpacity}>
           <Text style={styles.Card}>Doctor</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('PatientScreen')}
+          onPress={() => navigation.navigate('patientScreen')}
           style={styles.touchableOpacity}>
           <Text style={styles.Card}>Patient</Text>
         </TouchableOpacity>
