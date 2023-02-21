@@ -20,27 +20,6 @@ const fetchData = async (setData, data) => {
   setData(doctorData);
 };
 
-// on pressing edit option
-const editOptionFunctions = (
-  visible,
-  setVisible,
-  setId,
-  setName,
-  setspecialty,
-  id,
-  name,
-  specialty,
-  functionName,
-  setFunctionName,
-) => {
-  //to display patient details before editing
-  setVisible(true);
-  setId(id);
-  setName(name);
-  setspecialty(specialty);
-  setFunctionName('put');
-};
-
 // on pressing delete option
 const delOptionFunctions = (id, setData, data) => {
   Alert.alert('Are you sure', 'Delete card', [
@@ -63,11 +42,10 @@ const delOptionFunctions = (id, setData, data) => {
 const DoctorScreen = ({navigation: {goBack}, navigation}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [data, setData] = useState('');
-  const [visible, setVisible] = useState(false);
   const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [specialty, setspecialty] = useState('');
-  const [functionName, setFunctionName] = useState('');
+  const keyExtractor = (item, index) => index;
   const [email, setEmail] = useState('');
   const filteredData =
     data &&
@@ -78,6 +56,22 @@ const DoctorScreen = ({navigation: {goBack}, navigation}) => {
   useEffect(() => {
     fetchData(setData, data);
   }, []);
+
+  // on pressing edit option
+  const editOptionFunctions = (name, speciality, email, id) => {
+    //to display patient details before editing
+    let functionName = 'put';
+
+    navigation.navigate('Signup', {
+      editName: name,
+      editSpecialty: speciality,
+      editEmail: email,
+      id: id,
+      functionName: functionName,
+      setDoctorData: setData,
+      doctorData: data,
+    });
+  };
 
   const renderItem = item => (
     <TouchableOpacity
@@ -103,16 +97,10 @@ const DoctorScreen = ({navigation: {goBack}, navigation}) => {
           style={styles.editOption}
           onPress={() =>
             editOptionFunctions(
-              visible,
-              setVisible,
-              setId,
-              setName,
-              setspecialty,
-              item.item._id,
               item.item.name,
               item.item.specialty,
-              functionName,
-              setFunctionName,
+              item.item.email,
+              item.item._id,
             )
           }>
           <Text
@@ -162,62 +150,29 @@ const DoctorScreen = ({navigation: {goBack}, navigation}) => {
       </View>
       <FlatList
         data={filteredData}
-        renderItem={item =>
-          renderItem(
-            item,
-            visible,
-            setVisible,
-            id,
-            setId,
-            name,
-            setName,
-            specialty,
-            setspecialty,
-            functionName,
-            setFunctionName,
-            setData,
-            data,
-            navigation,
-            email,
-            setEmail,
-          )
-        }
+        renderItem={item => renderItem(item)}
         numColumns={2}
-        keyExtractor={item => item.name}
-        setVisible={setVisible}
-        visible={visible}
+        keyExtractor={keyExtractor}
       />
       <TouchableOpacity
         style={styles.floatingButton}
         onPress={() =>
-          setVisible(true) +
-          setFunctionName('post') +
+          // setFunctionName('post') +
           setName('') +
           setspecialty('') +
           setId('') +
-          navigation.navigate('Signup')
+          navigation.navigate('Signup', {
+            editName: name,
+            editSpecialty: specialty,
+            editEmail: email,
+            id: id,
+            functionName: '',
+            setDoctorData: setData,
+            doctorData: data,
+          })
         }>
         <Text style={styles.floatButtonText}>+</Text>
       </TouchableOpacity>
-      {/* <Modal isVisible={visible} transparent={false} style={styles.modalForm}>
-        <View>
-          <Form
-            setVisible={setVisible}
-            visible={visible}
-            id={id}
-            name={name}
-            specialty={specialty}
-            setId={setId}
-            setName={setName}
-            setspecialty={setspecialty}
-            functionName={functionName}
-            setFunctionName={setFunctionName}
-            fetchData={fetchData}
-            data={data}
-            setData={setData}
-          />
-        </View>
-      </Modal> */}
     </View>
   );
 };

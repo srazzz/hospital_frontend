@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -14,18 +14,19 @@ const DoctorDetails = ({navigation: {goBack}, navigation, route}) => {
   const [finalPatients, setFinalPatients] = useState([]);
   var index = 0;
 
-  if (patients.length !== 0) {
-    const patientsData = async () => {
-      let allPatients = await connection('patients');
-      let finalPatients = allPatients.filter(patient => {
-        return patients.includes(patient._id);
-      });
+  useEffect(() => {
+    if (patients.length !== 0) {
+      const patientsData = async () => {
+        let allPatients = await connection('patients');
+        let finalPatients = allPatients.filter(patient => {
+          return patients.includes(patient._id);
+        });
 
-      setFinalPatients(finalPatients);
-    };
-    patientsData();
-  }
-  console.log(finalPatients, 'final patients');
+        setFinalPatients(finalPatients);
+      };
+      patientsData();
+    }
+  }, [patients]);
 
   return (
     <View styles={{flex: 1}}>

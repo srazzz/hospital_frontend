@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -12,7 +12,12 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-modal';
 import AddPatient from './doctorScreens/AddPatient';
-import {postDoctorData, postPatientData} from './doctorScreens/ApiCalls';
+import {
+  postDoctorData,
+  postPatientData,
+  putDoctorData,
+} from './doctorScreens/ApiCalls';
+import {connection} from '../connection';
 
 const renderItem = (item, index) => {
   // console.log(item);
@@ -24,54 +29,75 @@ const renderItem = (item, index) => {
     </View>
   );
 };
-const SignupForm = ({navigation: {goBack}}) => {
-  const [name, setName] = useState('');
-  const [specialty, setSpecialty] = useState('');
-  const [email, setEmail] = useState('');
+const SignupForm = ({navigation: {goBack}, route}) => {
+  const {
+    editName,
+    editSpecialty,
+    editEmail,
+    id,
+    functionName,
+    setDoctorData,
+    doctorData,
+  } = route.params;
+  const [name, setName] = useState(editName);
+  const [specialty, setSpecialty] = useState(editSpecialty);
+  const [email, setEmail] = useState(editEmail);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [visible, setVisible] = useState(false);
   const [patientData, setPatientData] = useState([]);
-  var errors = [];
-  var index = 0;
+
+  let errors = [];
+  let index = 0;
 
   const handleSignUp = async () => {
-    const data = await Promise.all(
-      //imp
-      patientData.map(patient => {
-        return postPatientData(
-          patient.name,
-          patient.age,
-          '63ecd5fc65464f3ae0d15bd5',
+    // if it is edit
+    if (functionName === 'put') {
+      try {
+        const putData = await putDoctorData(name, specialty, email, id);
+        console.log(
+          putData,
+          'put call function doneeeeeeeeeeeeeeeeeeeeeeeeeeee',
         );
-      }),
-    );
-    var patientIds = [];
-    // to create new patients
-    data.forEach(eachId => {
-      patientIds.push(eachId.patient._id);
-    });
-
-    const postedData = await postDoctorData(
-      name,
-      specialty,
-      email,
-      password,
-      patientIds,
-      'doctors',
-    );
-    if (postedData.message === '') {
-      Alert.alert('Information', 'New doctor added');
-      setVisible(false);
-
-      // setConfirmPassword("")     ask pavan
-      // setEmail("")
+      } catch (err) {
+        console.log(err);
+      }
+      const dummy = await connection('doctors');
+      setDoctorData(dummy);
+      // console.log(doctorData, 'after refreshhhhhhhhhhhhhhhhhhh');
+      goBack();
     } else {
-      Alert.alert('Information', postedData.message.toString(), 'error');
+      const data = await Promise.all(
+        //imp
+        patientData.map(patient => {
+          return postPatientData(
+            patient.name,
+            patient.age,
+            '63ecd5fc65464f3ae0d15bd5',
+          );
+        }),
+      );
+
+      var patientIds = [];
+      // to create new patients
+      data.forEach(eachId => {
+        patientIds.push(eachId.patient._id);
+      });
+
+      const postedData = await postDoctorData(
+        name,
+        specialty,
+        email,
+        password,
+        patientIds,
+        'doctors',
+      );
+
+      setPatientData([]); // finally this should happen to reset data
+      const dummy = await connection('doctors');
+      setDoctorData(dummy);
+      goBack();
     }
-    console.log(postedData, 'doctor posted data ');
-    setPatientData([]); // finally this should happen to reset data
-    console.log(data, 'data in sinup', patientIds, 'final details');
   };
 
   const addPatient = setVisible => {
@@ -108,14 +134,14 @@ const SignupForm = ({navigation: {goBack}}) => {
           <TextInput
             style={styles.input}
             value={name}
-            onChangeText={text => setName(text)}
+            onChangeText={setName}
             placeholderTextColor="grey"
             placeholder="Name"
           />
           <TextInput
             style={styles.input}
             value={specialty}
-            onChangeText={text => setSpecialty(text)}
+            onChangeText={setSpecialty}
             placeholderTextColor="grey"
             placeholder="speciality"
           />
@@ -123,7 +149,7 @@ const SignupForm = ({navigation: {goBack}}) => {
           <TextInput
             style={styles.input}
             value={email}
-            onChangeText={text => setEmail(text)}
+            onChangeText={setEmail}
             placeholderTextColor="grey"
             placeholder="Email-ID"
             keyboardType="email-address"
@@ -158,7 +184,7 @@ const SignupForm = ({navigation: {goBack}}) => {
                 index = index + 1;
                 // keyExtractor={item.name}
                 return (
-                  <View key={index.toString()} style={styles.eachPatient}>
+                  <View key={index} style={styles.eachPatient}>
                     <Text style={{color: 'white'}}>
                       ----------patient {index}----------
                     </Text>

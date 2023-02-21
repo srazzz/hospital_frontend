@@ -15,42 +15,22 @@ const Form = props => {
   const [name, setName] = useState(props.name);
   const [age, setAge] = useState(props.age);
   const [id, setId] = useState(props.id);
-  //   const [error, setError] = useState({});
 
-  //   const validate = (name, age) => {
-  //     console.log(error)
-  //     setError(error.name="",error.age="")
-  //     console.log(name,age ,"validate fucntion")
-  //     if (name === '') {
-  //       error.name = 'please enter name ';
-  //     }
-  //     if (age === '') {
-  //       error.age = 'please enter your age ';
-  //     }
-  //     setError(error);
-  // if(error.name !=="" && error.age !== "")
-  // Alert.alert("enter details correctly",{error})
-  //   };
-  
   const functionOnPressSubmit = async () => {
-    // console.log("function name",props.functionName)
     if (props.functionName === 'post') {
       const postedData = await postData(name, age, 'patients');
-      // console.log("updated ",postedData);
-      // Alert.alert('Info', 'added new data');
       if (postedData.name !== '' && postedData.age !== '') {
-        // props.fetchData()
         Alert.alert('Info', 'added new data');
       } else {
         Alert.alert('Info', 'entered wrong data'); //alert not opening
       }
-      await props.fetchData(props.setData,props.data);
+      await props.fetchData(props.setData, props.data);
     } else {
       // setId(id)
-      console.log(name,age,id,props.data,"is data tehre")
+      console.log(name, age, id, props.data, 'is data tehre');
       const changedData = putData(id, name, age, 'patients');
-      // console.log("changeed data is", changedData)
-      await props.fetchData(props.setData,props.data);
+
+      await props.fetchData(props.setData, props.data);
       if (changedData.name !== '' && changedData.age !== '') {
         // props.fetchData()
         Alert.alert('Info', ' data updated');

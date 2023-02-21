@@ -2,17 +2,17 @@
 export const connection = async type => {
   try {
     const response = await fetch(`http://192.168.0.158:3001/${type}`);
+    console.log(response);
     const json = await response.json();
-    // console.log(patients)
     return type === 'doctors' ? json.doctors : json.patients;
   } catch (error) {
-    console.error(error);
+    console.error(error, 'fffffffffffff');
   } finally {
   }
 };
 
 export const postData = (name, age, type) => {
-  console.log(`http://192.168.0.158:3001/${type}`);
+  // console.log(`http://192.168.0.158:3001/${type}`);
   return new Promise(async (resolve, reject) => {
     try {
       const response = await fetch(`http://192.168.0.158:3001/${type}`, {
@@ -22,7 +22,7 @@ export const postData = (name, age, type) => {
         },
         body: JSON.stringify({name, specialty: age}),
       });
-      console.log(response);
+      // console.log(response);
       const data = await response.json();
       resolve(data);
     } catch (error) {
