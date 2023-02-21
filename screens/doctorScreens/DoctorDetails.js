@@ -11,14 +11,16 @@ import {connection} from '../../connection';
 
 const DoctorDetails = ({navigation: {goBack}, navigation, route}) => {
   const {name, specialty, email, patients} = route.params;
-  const [finalPatients, setFinalPatients] = useState([]);
+  const [finalPatients, setFinalPatients] = useState([]); //this variable is to store data of patients get by id
   var index = 0;
 
   useEffect(() => {
     if (patients.length !== 0) {
+      //if doctor has atleast one patient
       const patientsData = async () => {
-        let allPatients = await connection('patients');
+        let allPatients = await connection('patients'); //taking patients data :api call
         let finalPatients = allPatients.filter(patient => {
+          //filtering patient from all patient using id
           return patients.includes(patient._id);
         });
 
@@ -30,6 +32,7 @@ const DoctorDetails = ({navigation: {goBack}, navigation, route}) => {
 
   return (
     <View styles={{flex: 1}}>
+      {/* header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => goBack()}>
           <Icon name="arrow-back-ios" size={30} style={{color: 'black'}} />
@@ -44,6 +47,7 @@ const DoctorDetails = ({navigation: {goBack}, navigation, route}) => {
           />
         </TouchableOpacity>
       </View>
+      {/* main view  */}
       <ScrollView
         style={{
           padding: 10,
@@ -80,6 +84,7 @@ const DoctorDetails = ({navigation: {goBack}, navigation, route}) => {
           }}>
           {patients.length !== 0 && finalPatients
             ? finalPatients.map((patient, index) => (
+                // on pressing patient card it shows full details of particular patient
                 <TouchableOpacity
                   key={patient._id}
                   onPress={() =>
@@ -93,7 +98,6 @@ const DoctorDetails = ({navigation: {goBack}, navigation, route}) => {
                       backgroundColor: '#3B6474',
                       margin: 0,
                       padding: 10,
-
                       margin: 3,
                       borderRadius: 4,
                       borderWidth: 1,

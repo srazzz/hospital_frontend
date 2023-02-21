@@ -9,7 +9,6 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const PatientDetails = ({navigation: {goBack}, route}) => {
   const {name, age} = route.params;
-  console.log(route.params);
 
   return (
     <View style={{flex: 1}}>

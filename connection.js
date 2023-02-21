@@ -2,7 +2,6 @@
 export const connection = async type => {
   try {
     const response = await fetch(`http://192.168.0.158:3001/${type}`);
-    console.log(response);
     const json = await response.json();
     return type === 'doctors' ? json.doctors : json.patients;
   } catch (error) {
@@ -12,7 +11,6 @@ export const connection = async type => {
 };
 
 export const postData = (name, age, type) => {
-  // console.log(`http://192.168.0.158:3001/${type}`);
   return new Promise(async (resolve, reject) => {
     try {
       const response = await fetch(`http://192.168.0.158:3001/${type}`, {
@@ -22,7 +20,6 @@ export const postData = (name, age, type) => {
         },
         body: JSON.stringify({name, specialty: age}),
       });
-      // console.log(response);
       const data = await response.json();
       resolve(data);
     } catch (error) {
@@ -35,7 +32,6 @@ export const postData = (name, age, type) => {
 export const putData = async (id, name, age, type) => {
   return new Promise(async (resolve, reject) => {
     try {
-      // console.log(id,name,age,"theretehre")
       const response = await fetch(`http://192.168.0.158:3001/${type}/${id}`, {
         method: 'PUT',
         headers: {
@@ -44,7 +40,6 @@ export const putData = async (id, name, age, type) => {
         body: JSON.stringify({name: name, age: age}),
       });
       const data = await response.json();
-      // console.log(data,"theretehre")
       resolve(data);
     } catch (error) {
       console.error(error);

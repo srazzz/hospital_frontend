@@ -8,14 +8,14 @@ import {
   Alert,
 } from 'react-native';
 
+// add patient screen in signUp
 const AddPatientForm = props => {
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const patient = {name: name, age: age};
+  // adding new patient in patientData list
   const addPatient = () => {
     props.patientData.push(patient);
-    // console.log(patient)
-    // console.log(props.patientData)
     props.setVisible(false);
     Alert.alert('Information', 'patient added');
   };

@@ -21,9 +21,7 @@ export const postDoctorData = (
           patients: patientData,
         }),
       });
-      // console.log(response);
       const data = await response.json();
-      //   console.log(data, 'this is myyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy data');
       resolve(data);
     } catch (error) {
       console.error(error);
@@ -33,8 +31,6 @@ export const postDoctorData = (
 };
 
 export const postPatientData = (name, age, doctorId) => {
-  //   console.log('details', name, age, doctorId);
-  console.log('http://192.168.0.158:3001/patients');
   return new Promise(async (resolve, reject) => {
     try {
       const response = await fetch('http://192.168.0.158:3001/patients', {
@@ -45,7 +41,6 @@ export const postPatientData = (name, age, doctorId) => {
         body: JSON.stringify({name, age: age, doctor: doctorId}),
       });
       const data = await response.json();
-      // console.log(data, 'data in api call');
       resolve(data);
     } catch (error) {
       console.error(error);

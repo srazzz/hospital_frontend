@@ -27,7 +27,6 @@ const Form = props => {
       await props.fetchData(props.setData, props.data);
     } else {
       // setId(id)
-      console.log(name, age, id, props.data, 'is data tehre');
       const changedData = putData(id, name, age, 'patients');
 
       await props.fetchData(props.setData, props.data);

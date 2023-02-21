@@ -8,8 +8,8 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  DeviceEventEmitter,
 } from 'react-native';
-// import Modal from 'react-native-modal';
 import {connection, del} from '../../connection';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
@@ -31,52 +31,57 @@ const delOptionFunctions = (id, setData, data) => {
     {
       text: 'OK',
       onPress: () => {
-        console.log('ok pressed', id);
         del(id, 'doctors') + fetchData(setData, data); //deleting the data by id and refreshing page
-        console.log('delted');
       },
     },
   ]);
 };
 
 const DoctorScreen = ({navigation: {goBack}, navigation}) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [data, setData] = useState('');
-  const [id, setId] = useState('');
+  const [searchTerm, setSearchTerm] = useState(''); //in search bar text entered
+  const [data, setData] = useState(''); //doctors data
+  const [id, setId] = useState(''); //details of doctors variables
   const [name, setName] = useState('');
   const [specialty, setspecialty] = useState('');
-  const keyExtractor = (item, index) => index;
   const [email, setEmail] = useState('');
+  const keyExtractor = (item, index) => index; //to avoid re rendering (stackOverflow)
+  //filtering searchTerm in person name
   const filteredData =
     data &&
     data.filter(person =>
       person.name.toLowerCase().includes(searchTerm.toLowerCase()),
     );
 
+  //just run once
   useEffect(() => {
     fetchData(setData, data);
+    //this is to avoid error : non serializable values were found in the navigation state
+    // refresh is the event name, we call this in signUp screen to refresh this page after signUp
+    DeviceEventEmitter.addListener('refresh', e => {
+      setData(e);
+    });
+
+    return () => DeviceEventEmitter.removeAllListeners();
   }, []);
 
   // on pressing edit option
-  const editOptionFunctions = (name, speciality, email, id) => {
-    //to display patient details before editing
+  const editOptionFunctions = (name, speciality, email, id, patients) => {
     let functionName = 'put';
-
     navigation.navigate('Signup', {
       editName: name,
       editSpecialty: speciality,
       editEmail: email,
       id: id,
       functionName: functionName,
-      setDoctorData: setData,
       doctorData: data,
     });
   };
 
   const renderItem = item => (
-    <TouchableOpacity
+    <TouchableOpacity //card
       style={{width: '50%'}}
       onPress={() =>
+        //onPress card shows the details of doctor
         navigation.navigate('DoctorDetails', {
           name: item.item.name,
           specialty: item.item.specialty,
@@ -85,7 +90,7 @@ const DoctorScreen = ({navigation: {goBack}, navigation}) => {
         })
       }>
       <View style={styles.box}>
-        <TouchableOpacity
+        <TouchableOpacity //delete option
           style={styles.delOption}
           onPress={() => delOptionFunctions(item.item._id, setData, data)}>
           <Text
@@ -93,7 +98,8 @@ const DoctorScreen = ({navigation: {goBack}, navigation}) => {
             <Icon name="delete" size={15} />
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity
+
+        <TouchableOpacity //edit option
           style={styles.editOption}
           onPress={() =>
             editOptionFunctions(
@@ -101,13 +107,16 @@ const DoctorScreen = ({navigation: {goBack}, navigation}) => {
               item.item.specialty,
               item.item.email,
               item.item._id,
+              item.item.patients,
             )
           }>
-          <Text
+          <Text //edit icon
             style={{color: 'black', alignItems: 'center', textAlign: 'center'}}>
             <EntypoIcon name={'pencil'} size={15} />
           </Text>
         </TouchableOpacity>
+
+        {/* details in each card */}
         <Text style={styles.name}>
           Name : {item.item.name}
           {'\n'}
@@ -127,8 +136,10 @@ const DoctorScreen = ({navigation: {goBack}, navigation}) => {
   return (
     <View style={styles.background}>
       <TouchableOpacity style={styles.backIcon} onPress={() => goBack()}>
+        {/* back icon : goBack() goes to the previous screen in teh stack */}
         <Icon name="arrow-back-ios" size={30} style={{color: 'black'}} />
       </TouchableOpacity>
+
       <View
         style={{
           flexDirection: 'row',
@@ -148,16 +159,17 @@ const DoctorScreen = ({navigation: {goBack}, navigation}) => {
         />
         <Icon name="search" size={30} style={{color: 'black'}} />
       </View>
+      {/* flatlist to display the doctor data  */}
       <FlatList
         data={filteredData}
         renderItem={item => renderItem(item)}
         numColumns={2}
         keyExtractor={keyExtractor}
       />
+      {/* floating button to create new doctor(doctor SignUp) */}
       <TouchableOpacity
         style={styles.floatingButton}
         onPress={() =>
-          // setFunctionName('post') +
           setName('') +
           setspecialty('') +
           setId('') +
@@ -226,8 +238,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '89%',
     left: '79%',
-    // top: 603,
-    // left: 290,
   },
   delOption: {
     backgroundColor: '#D3E6E5',
@@ -270,5 +280,4 @@ const styles = StyleSheet.create({
   },
 });
 
-// module.exports = {fetchData : fetchData , patientScreen : patientScreen}   ;
 export default DoctorScreen;

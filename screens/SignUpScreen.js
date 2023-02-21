@@ -8,6 +8,7 @@ import {
   FlatList,
   Alert,
   ScrollView,
+  DeviceEventEmitter,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Modal from 'react-native-modal';
@@ -36,8 +37,8 @@ const SignupForm = ({navigation: {goBack}, route}) => {
     editEmail,
     id,
     functionName,
-    setDoctorData,
-    doctorData,
+    // setDoctorData,
+    // doctorData,
   } = route.params;
   const [name, setName] = useState(editName);
   const [specialty, setSpecialty] = useState(editSpecialty);
@@ -55,16 +56,12 @@ const SignupForm = ({navigation: {goBack}, route}) => {
     if (functionName === 'put') {
       try {
         const putData = await putDoctorData(name, specialty, email, id);
-        console.log(
-          putData,
-          'put call function doneeeeeeeeeeeeeeeeeeeeeeeeeeee',
-        );
       } catch (err) {
         console.log(err);
       }
       const dummy = await connection('doctors');
-      setDoctorData(dummy);
-      // console.log(doctorData, 'after refreshhhhhhhhhhhhhhhhhhh');
+      // setDoctorData(dummy);
+      DeviceEventEmitter.emit('refresh', dummy);
       goBack();
     } else {
       const data = await Promise.all(
@@ -95,7 +92,7 @@ const SignupForm = ({navigation: {goBack}, route}) => {
 
       setPatientData([]); // finally this should happen to reset data
       const dummy = await connection('doctors');
-      setDoctorData(dummy);
+      // setDoctorData(dummy);
       goBack();
     }
   };

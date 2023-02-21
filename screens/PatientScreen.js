@@ -14,13 +14,12 @@ import {connection, del} from '../connection';
 import Form from './PatientForm';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
-
-const fetchData = async (setData,data) => {
-  console.log('fetched');
+// fetching patient data
+const fetchData = async (setData, data) => {
   let patientData = await connection('patients');
   setData(patientData);
 };
-
+// on press edit option
 const editOptionFunctions = (
   visible,
   setVisible,
@@ -38,10 +37,9 @@ const editOptionFunctions = (
   setName(name);
   setAge(age);
   setFunctionName('put');
-  //  console.log(functionName,"heyyyyyyyyyyyyyyyyyyy");
 };
-
-const delOptionFunctions = (id,setData,data) => {
+// onPress edit icon
+const delOptionFunctions = (id, setData, data) => {
   Alert.alert('Are you sure', 'Delete card', [
     {
       text: 'Cancel',
@@ -51,14 +49,12 @@ const delOptionFunctions = (id,setData,data) => {
     {
       text: 'OK',
       onPress: () => {
-        console.log("ok pressed",id)
-        del(id, 'patients') + fetchData(setData,data);
-        console.log("delted")
+        del(id, 'patients') + fetchData(setData, data); //deleting and refreshing page
       },
     },
   ]);
 };
-
+//to display each card i.e., each patient
 const renderItem = (
   item,
   visible,
@@ -71,16 +67,21 @@ const renderItem = (
   setAge,
   functionName,
   setFunctionName,
-  setData,data
+  setData,
+  data,
 ) => (
   <View style={styles.box}>
+    {' '}
+    {/* card*/}
+    {/* delete icon */}
     <TouchableOpacity
       style={styles.delOption}
-      onPress={() => delOptionFunctions(item.item._id,setData,data)}>
+      onPress={() => delOptionFunctions(item.item._id, setData, data)}>
       <Text style={{color: 'black', alignItems: 'center', textAlign: 'center'}}>
         <Icon name="delete" size={15} />
       </Text>
     </TouchableOpacity>
+    {/* edit icon */}
     <TouchableOpacity
       style={styles.editOption}
       onPress={() =>
@@ -101,7 +102,7 @@ const renderItem = (
         <EntypoIcon name={'pencil'} size={15} />
       </Text>
     </TouchableOpacity>
-
+    {/* details inside card */}
     <Text style={styles.name}>
       Name : {item.item.name}
       {'\n'}
@@ -114,13 +115,14 @@ const renderItem = (
 );
 
 const PatientScreen = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [data, setData] = useState('');
-  const [visible, setVisible] = useState(false);
-  const [id, setId] = useState('');
+  const [searchTerm, setSearchTerm] = useState(''); //text inside search bar
+  const [data, setData] = useState(''); //patients data
+  const [visible, setVisible] = useState(false); //to display modal to add new patient
+  const [id, setId] = useState(''); //patient details
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
-  const [functionName, setFunctionName] = useState('');
+  const [functionName, setFunctionName] = useState(''); //either put or post
+
   const filteredData =
     data &&
     data.filter(person =>
@@ -128,7 +130,7 @@ const PatientScreen = () => {
     );
 
   useEffect(() => {
-    fetchData(setData,data);
+    fetchData(setData, data); //fetching the data
   }, []);
 
   return (
@@ -144,17 +146,20 @@ const PatientScreen = () => {
           borderColor: 'black',
           borderWidth: 2,
         }}>
+        {/* search bar */}
         <TextInput
           placeholder="Patient Search Here...."
           placeholderTextColor="#000"
           style={styles.searchBar}
           onChangeText={text => setSearchTerm(text)}
         />
+        {/* search icon */}
         <Image
           source={require('../images/search_icon.png')}
           style={{width: '15%', height: '80%', resizeMode: 'contain'}}
         />
       </View>
+      {/* flat list to siplay patients */}
       <FlatList
         data={filteredData}
         renderItem={item =>
@@ -170,14 +175,16 @@ const PatientScreen = () => {
             setAge,
             functionName,
             setFunctionName,
-            setData,data,
+            setData,
+            data,
           )
         }
-        numColumns={2}
+        numColumns={2} //no of cards in each row
         keyExtractor={item => item.name}
         setVisible={setVisible}
         visible={visible}
       />
+      {/* add new patient floating button + on bottom right */}
       <TouchableOpacity
         style={styles.floatingButton}
         onPress={() =>
@@ -189,8 +196,10 @@ const PatientScreen = () => {
         }>
         <Text style={styles.floatButtonText}>+</Text>
       </TouchableOpacity>
+      {/* modal to enter details of new patient */}
       <Modal isVisible={visible} transparent={false} style={styles.modalForm}>
         <View>
+          {/* sending variables to form component this is working as modal */}
           <Form
             setVisible={setVisible}
             visible={visible}
