@@ -8,6 +8,7 @@ import PatientScreen from './screens/PatientScreen';
 import LoginForm from './screens/Login';
 import SignupForm from './screens/SignUpScreen';
 import displayCard from './screens/displayCard';
+import DoctorDetails from './screens/DoctorDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,10 +18,10 @@ const App = () => {
       <Stack.Navigator initialRouteName="Main">
         <Stack.Screen options={{headerShown : false}} name="Main" component={MainScreen} />
         <Stack.Screen name='Login' component={LoginForm}  />
-        {/* <Stack.Screen options={{headerShown : false}} name="SignUp" component={SignUp} /> */}
         <Stack.Screen options={{headerShown : false}} name="Signup" component={SignupForm} />
         <Stack.Screen options={{headerShown : false}} name="DoctorScreen" component={DoctorScreen} />
         <Stack.Screen name="patientScreen" component={PatientScreen} />
+        <Stack.Screen options={{headerShown : false}} name='DoctorDetails' component={DoctorDetails} />
         <Stack.Screen name='Display' component={displayCard} />
       </Stack.Navigator>
     </NavigationContainer>

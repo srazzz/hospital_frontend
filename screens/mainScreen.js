@@ -27,7 +27,7 @@ const MainScreen = ({navigation}) => {
       </View>
     </View>
   );
-};
+}; 
 
 const styles = StyleSheet.create({
   background: {

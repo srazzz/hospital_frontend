@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -24,10 +24,11 @@ const renderItem = (item, index) => {
     </View>
   );
 };
-const SignupForm = ({navigation: {goBack}}) => {
-  const [name, setName] = useState('');
-  const [specialty, setSpecialty] = useState('');
-  const [email, setEmail] = useState('');
+const SignupForm = ({navigation: {goBack}, route, navigation }) => {
+  const {editName, editSpecialty, editEmail, id, functionName} = route.params;
+  const [name, setName] = useState(editName);
+  const [specialty, setSpecialty] = useState(editSpecialty);
+  const [email, setEmail] = useState(editEmail);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [visible, setVisible] = useState(false);
@@ -35,7 +36,13 @@ const SignupForm = ({navigation: {goBack}}) => {
   const [errors, setErrors] = useState([]);
 
   var index = 0;
-
+  // useEffect(() => {
+  //   if (functionName === 'put') {
+  //     setName(editName);
+  //     setSpecialty(editSpecialty);
+  //     setEmail(editEmail);
+  //   }
+  // });
   const handleSignUp = async () => {
     const validation = () => {
       if (name.trim() === '') {
