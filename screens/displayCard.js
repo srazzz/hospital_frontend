@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, ScrollView, StyleSheet } from 'react-native';
 
-const displayCard = ({ route }) => {
+const DisplayCard = ({ route }) => {
   const { name, age } = route.params;
 
   return (
@@ -76,4 +76,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default displayCard;
+export default DisplayCard;

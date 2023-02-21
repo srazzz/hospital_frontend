@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet,} from 'react-native';
+import FontistoIcon from 'react-native-vector-icons/Fontisto';
 
 const LoginForm = ({navigation}) => {
   const [username, setUsername] = useState('');
@@ -41,7 +42,7 @@ const LoginForm = ({navigation}) => {
 		<View style={styles.container}>
 			<Text
 			style={styles.Logo}
-			>LOGO</Text>
+			><FontistoIcon name={'doctor'} size={70} /></Text>
 		<TextInput
 			style={styles.input}
 			value={username}
@@ -78,6 +79,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		position: 'absolute',
 		top: '10%',
+		color: '#3B6474',
 	},
   input: {
     width: '80%',

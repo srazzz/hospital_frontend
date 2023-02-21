@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { connection } from '../connection';
+import {connection} from '../connection';
 
 const DoctorDetails = ({navigation: {goBack}, navigation, route}) => {
   const {name, specialty, email, patients} = route.params;
@@ -25,7 +25,7 @@ const DoctorDetails = ({navigation: {goBack}, navigation, route}) => {
     };
     patientsData();
   }
-  console.log(finalPatients, 'final patients');
+  // console.log(finalPatients, 'final patients');
 
   return (
     <View styles={{flex: 1}}>
@@ -35,13 +35,9 @@ const DoctorDetails = ({navigation: {goBack}, navigation, route}) => {
         </TouchableOpacity>
         <Text style={{color: '#000'}}>Doctor details </Text>
         <TouchableOpacity
-          onPress={() => goBack() + setPatientData([]) + setIndex(0)}>
-          <Icon
-            name="arrow-back-ios"
-            size={30}
-            style={{color: 'transparent'}}
-          />
-        </TouchableOpacity>
+          onPress={() =>
+            goBack() + setPatientData([]) + setIndex(0)
+          }></TouchableOpacity>
       </View>
       <ScrollView
         style={{
@@ -107,8 +103,6 @@ const DoctorDetails = ({navigation: {goBack}, navigation, route}) => {
                       }}>
                       patient {index + 1}
                     </Text>
-                    {/* <line>jfjff</line> */}
-
                     <Text style={{color: 'white'}}>Name: {patient.name}</Text>
                     <Text style={{color: 'white'}}>Age: {patient.age}</Text>
                   </View>
