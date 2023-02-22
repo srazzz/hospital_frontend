@@ -60,7 +60,6 @@ const DoctorScreen = ({navigation: {goBack}, navigation}) => {
     DeviceEventEmitter.addListener('refresh', e => {
       setData(e);
     });
-
     return () => DeviceEventEmitter.removeAllListeners();
   }, []);
 
@@ -179,8 +178,8 @@ const DoctorScreen = ({navigation: {goBack}, navigation}) => {
             editEmail: email,
             id: id,
             functionName: '',
-            setDoctorData: setData,
-            doctorData: data,
+            // setDoctorData: setData,
+            // doctorData: data,
           })
         }>
         <Text style={styles.floatButtonText}>+</Text>

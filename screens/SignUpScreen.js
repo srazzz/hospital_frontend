@@ -21,7 +21,6 @@ import {
 import {connection} from '../connection';
 
 const renderItem = (item, index) => {
-  // console.log(item);
   return (
     <View style={{marginBottom: 10}}>
       <Text style={{color: 'white'}}>Patient {index} </Text>
@@ -31,15 +30,7 @@ const renderItem = (item, index) => {
   );
 };
 const SignupForm = ({navigation: {goBack}, route}) => {
-  const {
-    editName,
-    editSpecialty,
-    editEmail,
-    id,
-    functionName,
-    // setDoctorData,
-    // doctorData,
-  } = route.params;
+  const {editName, editSpecialty, editEmail, id, functionName} = route.params;
   const [name, setName] = useState(editName);
   const [specialty, setSpecialty] = useState(editSpecialty);
   const [email, setEmail] = useState(editEmail);
@@ -59,40 +50,34 @@ const SignupForm = ({navigation: {goBack}, route}) => {
       } catch (err) {
         console.log(err);
       }
+
       const dummy = await connection('doctors');
-      // setDoctorData(dummy);
       DeviceEventEmitter.emit('refresh', dummy);
+
       goBack();
     } else {
-      const data = await Promise.all(
-        //imp
-        patientData.map(patient => {
-          return postPatientData(
-            patient.name,
-            patient.age,
-            '63ecd5fc65464f3ae0d15bd5',
-          );
-        }),
-      );
+      try {
+        const data = await postPatientData(patientData);
 
-      var patientIds = [];
-      // to create new patients
-      data.forEach(eachId => {
-        patientIds.push(eachId.patient._id);
-      });
-
-      const postedData = await postDoctorData(
-        name,
-        specialty,
-        email,
-        password,
-        patientIds,
-        'doctors',
-      );
+        let patientIds = [];
+        data.forEach(eachId => {
+          patientIds.push(eachId._id);
+        });
+        const postedData = await postDoctorData(
+          name,
+          specialty,
+          email,
+          password,
+          patientIds,
+          'doctors',
+        );
+      } catch (e) {
+        console.log(e);
+      }
 
       setPatientData([]); // finally this should happen to reset data
       const dummy = await connection('doctors');
-      // setDoctorData(dummy);
+      DeviceEventEmitter.emit('refresh', dummy);
       goBack();
     }
   };

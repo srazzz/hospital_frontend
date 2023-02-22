@@ -12,7 +12,7 @@ import {
 const AddPatientForm = props => {
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
-  const patient = {name: name, age: age};
+  const patient = {name: name, age: age, doctor: '63ece4d3580fe1e347302565'};
   // adding new patient in patientData list
   const addPatient = () => {
     props.patientData.push(patient);

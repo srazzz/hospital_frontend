@@ -71,7 +71,6 @@ const renderItem = (
   data,
 ) => (
   <View style={styles.box}>
-    {' '}
     {/* card*/}
     {/* delete icon */}
     <TouchableOpacity

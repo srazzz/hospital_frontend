@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import {postData, putData} from '../connection';
-
+import {postPatientData} from './doctorScreens/ApiCalls';
 const Form = props => {
   // const [modalVisible, setModalVisible] = useState(false);
   const [name, setName] = useState(props.name);
@@ -17,8 +17,11 @@ const Form = props => {
   const [id, setId] = useState(props.id);
 
   const functionOnPressSubmit = async () => {
+    const patientArray = [
+      {name: name, age: age, doctor: '63ece4d3580fe1e347302565'},
+    ];
     if (props.functionName === 'post') {
-      const postedData = await postData(name, age, 'patients');
+      const postedData = await postPatientData(patientArray);
       if (postedData.name !== '' && postedData.age !== '') {
         Alert.alert('Info', 'added new data');
       } else {

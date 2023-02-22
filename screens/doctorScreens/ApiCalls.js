@@ -29,8 +29,7 @@ export const postDoctorData = (
     }
   });
 };
-
-export const postPatientData = (name, age, doctorId) => {
+export const postPatientData = patientArray => {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await fetch('http://192.168.0.158:3001/patients', {
@@ -38,7 +37,7 @@ export const postPatientData = (name, age, doctorId) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({name, age: age, doctor: doctorId}),
+        body: JSON.stringify(patientArray),
       });
       const data = await response.json();
       resolve(data);
@@ -48,7 +47,6 @@ export const postPatientData = (name, age, doctorId) => {
     }
   });
 };
-
 export const putDoctorData = (name, specialty, email, id) => {
   return new Promise(async (resolve, reject) => {
     try {

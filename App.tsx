@@ -9,7 +9,6 @@ import LoginForm from './screens/Login';
 import SignupForm from './screens/SignUpScreen';
 import DoctorDetails from './screens/doctorScreens/DoctorDetails'
 import PatientDetails from './screens/PatientDetails';
-import Test from './screens/doctorScreens/Test';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
